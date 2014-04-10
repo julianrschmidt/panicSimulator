@@ -98,7 +98,7 @@ end
 % true if drawn images are captured
 handles.captureBool = false;
 %generate agents, walls  in dependence on settings
-simulationObj = initField(settings, cell(0));
+simulationObj = initArena(settings, cell(0));
 
 %set time for simulation and plot
 simulationObj = initSimulationObj(simulationObj);
@@ -202,14 +202,16 @@ function resetButton_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 % resets agents in dependence of settings
 
-resetProcedure(hObject, handles)
+handles = resetProcedure(handles);
+% Update handles structure
+guidata(hObject, handles);
 
-function resetProcedure(hObject, handles)
+function handles = resetProcedure(handles)
 [handles.statisticObj, handles.settings] = resetStatisticObj(handles.statisticObj, handles.settings, 0);
 set(handles.timeText, 'string', secondsToTimeString(0));
 
 %generate agents, walls in dependence on settings
-simulationObj = initField(handles.settings, cell(0));
+simulationObj = initArena(handles.settings, cell(0));
 
 % from here everything similar to opening_fcn
 simulationObj = initSimulationObj(simulationObj);
@@ -223,9 +225,6 @@ delete(plotObj.hWallLines(:));
 plotObj = plotInit(simulationObj, handles.settings, handles.figure1);
 handles.simulationObj = simulationObj;
 handles.plotObj = plotObj;
-
-% Update handles structure
-guidata(hObject, handles);
 
 
 % --- Executes on button press in captureButton.
@@ -291,12 +290,17 @@ enableStates = get(hGuiObj,'Enable');
 set(hGuiObj,'Enable', 'off');
 closeRequestFcnTemp = get(handles.figure1, 'CloseRequestFcn');
 set(handles.figure1, 'CloseRequestFcn', '');
-settings = settingsGui(handles.settings);
+[settings, resetBool] = settingsGui(handles.settings);
+% make buttons active again
 for guiObjNr = 1:length(hGuiObj)
     set(hGuiObj(guiObjNr),'Enable', enableStates{guiObjNr});
 end
 set(handles.figure1, 'CloseRequestFcn', closeRequestFcnTemp);
+%reset field
 handles.settings = settings;
+if resetBool
+    handles = resetProcedure(handles);
+end
 % Update handles structure
 guidata(hObject, handles);
 
@@ -321,7 +325,7 @@ for guiObjNr = 1:length(hGuiObj)
 end
 set(handles.figure1, 'CloseRequestFcn', closeRequestFcnTemp);
 
-%redraw field
+%replot arena
 plotObj = handles.plotObj;
 simulationObj = handles.simulationObj;
 simulationObj.pressure = zeros(1,size(simulationObj.agents,1));

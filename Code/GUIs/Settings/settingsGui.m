@@ -38,6 +38,7 @@ function settingsGui_OpeningFcn(hObject, eventdata, handles, varargin)
 % handles    structure with handles and user data (see GUIDATA)
 % varargin   command line arguments to settingsGui (see VARARGIN)
 handles.settings = varargin{1};
+handles.resetBool = false;
 % store old settings, to be returned if user presses cancel button
 handles.settingsOld = handles.settings;
 % fill all edit objects with the apropriate values
@@ -71,6 +72,7 @@ function varargout = settingsGui_OutputFcn(hObject, eventdata, handles)
 
 % Get default command line output from handles structure
 varargout{1} = handles.output;
+varargout{2} = handles.resetBool;
 
 % The figure can be deleted now
 delete(handles.figure1);
@@ -141,6 +143,7 @@ okProcedure(hObject, handles);
 function cancelProcedure(hObject, handles)
 % store old settings as output
 handles.output = handles.settingsOld;
+handles.resetBool = false;
 
 % Update handles structure
 guidata(hObject, handles);
@@ -167,6 +170,7 @@ function nAgentEdit_Callback(hObject, eventdata, handles)
 %        str2double(get(hObject,'String')) returns contents of nAgentEdit as a double
 [num, sucess] = testStr(get(hObject,'String'), 'int', [0,inf]);
 if sucess
+    handles.resetBool = true;
     handles.settings = setNAgent(handles.settings, num);
     % Update handles structure
     guidata(hObject, handles);
@@ -202,6 +206,7 @@ function doorWidthEdit_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of doorWidthEdit as text
 %        str2double(get(hObject,'String')) returns contents of doorWidthEdit as a double
+handles.resetBool = true;
 [num, sucess] = testStr(get(hObject,'String'), 'double', [0.01,inf]);
 if sucess
     handles.settings.doorWidth = num;
@@ -474,6 +479,7 @@ function wallAngleEdit_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 [num, sucess] = testStr(get(hObject,'String'), 'double', [0,90]);
 if sucess
+    handles.resetBool = true;
     handles.settings = setWallAngle(handles.settings, num*pi/180);
     % Update handles structure
     guidata(hObject, handles);
@@ -503,6 +509,7 @@ function xMaxEdit_Callback(hObject, eventdata, handles)
 %        str2double(get(hObject,'String')) returns contents of xMaxEdit as a double
 [num, sucess] = testStr(get(hObject,'String'), 'double', [2*handles.settings.border,inf]);
 if sucess
+    handles.resetBool = true;
     handles.settings = setXMax(handles.settings, num);
     % Update handles structure
     guidata(hObject, handles);
@@ -533,6 +540,7 @@ function yMaxEdit_Callback(hObject, eventdata, handles)
 %        str2double(get(hObject,'String')) returns contents of yMaxEdit as a double
 [num, sucess] = testStr(get(hObject,'String'), 'double', [handles.settings.border+0.4,inf]);
 if sucess
+    handles.resetBool = true;
     handles.settings = setYMax(handles.settings, num);
     % Update handles structure
     guidata(hObject, handles);
@@ -590,6 +598,7 @@ function agentPositionStylePopup_Callback(hObject, eventdata, handles)
 
 % Hints: contents = cellstr(get(hObject,'String')) returns agentPositionStylePopup contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from agentPositionStylePopup
+handles.resetBool = true;
 menueValue = get(hObject,'Value');
 if menueValue == 1
     handles.settings.agentPositionStyle = 'randomLeftHalf';
@@ -631,6 +640,7 @@ function wallPositionStylePopup_Callback(hObject, eventdata, handles)
 
 % Hints: contents = cellstr(get(hObject,'String')) returns wallPositionStylePopup contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from wallPositionStylePopup
+handles.resetBool = true;
 menueValue = get(hObject,'Value');
 if menueValue == 1
     handles.settings.wallPositionStyle = 'standard';
