@@ -13,7 +13,7 @@ settings.wallAngle = 0; % wall Angle = 0 corresponds to normal wall
 
 settings.NAgent = 10; % number of agents created if they are randomly created
 settings.border = 2; % border in grid
-settings.yMax = 30; %[m] length of field in y direction
+settings.yMax = 30; %[m] length of arena in y direction
 settings.doorWidth = 1; %[m]    % width of door, only relevant if standard 
                                 % walls are created
 
@@ -27,7 +27,7 @@ settings.vVarAgentsIni = 0.1; %[m/s] variance of velocity at initalization
 
 % xMax setting
 settings.xMaxCalcBool = true;
-settings.xMax = calcXMax(settings); %[m] length of field in x direction
+settings.xMax = calcXMax(settings); %[m] length of arena in x direction
 
 settings.vDes = 1;              % desired velocity of an agent
 

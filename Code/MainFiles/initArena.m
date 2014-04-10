@@ -1,5 +1,5 @@
-function simulationObj = initField( settings, simulationObj)
-%INITFIELD generates agent matrix and wall matrix in dependence on settings
+function simulationObj = initArena( settings, simulationObj)
+%INITARENA generates agent matrix and wall matrix in dependence on settings
 %   agents: [x, y, vx, vy, radius]
 %   walls: [x, y, radius]
 

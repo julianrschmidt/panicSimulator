@@ -12,8 +12,9 @@ hold on;
 scatter(zeros(1,length(timesAgentsThroughDoor)) + statisticObj3.runN, timesAgentsThroughDoor, 'xr');
 hold off;
 xlim([0, statisticObj3.runN + 1]);
-xlabel('run');
+set(gca, 'XTick', 1:max(1,ceil(statisticObj3.runN/20)):statisticObj3.runN);
+xlabel('simulation number');
 ylabel('t [s]');
-title('Time needed until all agents are through door');
+title('Time for each agent passing the exit');
 statisticObj3.runN = statisticObj3.runN +1;
 end
