@@ -1,0 +1,43 @@
+einstieg in code aufgegeben.
+-> black box test
+
+
+diverse stabile zustände generierbar.
+wahllose parameterwahl erzeugen wahllose zustände
+>> drei agents die sich vor einem engen ausgang stabil positionieren
+>> traube von agents die sich um den ausgang (auch rückseitig) ansammeln. (zugegeben mit völlig wahllosen, teils negativen parametern)
+
+
+zeit vermittelt eindruck von sekunden. läuft aber viel schneller.
+
+
+teilweise interessante/dubiose druckverhältnisse.
+
+
+ich bin erstaunt, dass es besser fluppt, solange viele agents eine traube bilden (im ggsatz zu einzelnen übrig gebliebenen, die sich hin und her drängeln)
+
+
+toll wären dateiendungen für die verschiedenen import/export files
+>> dateiendungen für einstellungen, wandkonfigurationen etc. wären zur unterscheidung eben angenehm. aber zugegeben in matlab ist der *.mat export schön einfach und wenn man die exports selbst vornimmt (mit entsprechender namensgebung) weiß man sicher auch, was man wo wieder importieren kann. bei mir kam jetzt halt immer "datei existiert nicht oder falsches format".
+
+
+unsaubere anordnung der linspace textfelder in statistic settings. (ausrichtung, überlagerung)
+
+
+nach laden von settings wird neue figure verwendet obwohl alte noch offen.
+>> ja, neues Fenster mit graph durchlauf gegen zeit
+
+
+in der settings-datei scheint eine automatische neuberechnung eingeschaltet zu sein, die man nirgendwo ausschalten kann?
+wohl doch nicht. lag an der variation eines parameters (in statistical settings)
+
+
+warum verschwinden zusätzliche wände (im editor modus erstellt) nach einem reset (pfeil-icon)?
+>> ja, ich habe den reset-btn sehr häufig betätigt, weil in den settings steht, dass das für einige parameter notwendig ist, aber nicht klar erkennbar wird, für welche genau. daher habe ich nach wertänderungen immer auch reset gedrückt. vermutlich ist das nicht nötig, aber eben auch nicht ersichtlich, wann nicht. 
+>> eigentlich ist die funktion auch so ok (inkl reset von wänden). evtl lässz sich über einen weiteren button nur für agents nachdenken.
+
+
+insgesamt empfinde ich das erstellen eines neuen szenarios als umständlich. verschiedene agent-durchmesser sind sehr aufwendig oder?
+was ist eigentlich der unterschied zwischen wänden und columns?
+
+
