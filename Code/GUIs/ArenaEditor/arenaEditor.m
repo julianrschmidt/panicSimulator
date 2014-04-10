@@ -1,15 +1,15 @@
-function varargout = editFieldGui(varargin)
-% EDITFIELDGUI MATLAB code for editFieldGui.fig
+function varargout = arenaEditor(varargin)
+% ARENAEDITOR MATLAB code for arenaEditor.fig
 %     
 %
-%      h = EDITFIELDGUI(handles) creates a new EDITFIELDGUI. handles must 
+%      h = ARENAEDITOR(handles) creates a new ARENAEDITOR. handles must 
 %       be a cell array, containing at least the following variables
 % 
 %      settings
 %      agents
 %      walls
 %
-%      The input is passed to editFieldGui_OpeningFcn via varargin.
+%      The input is passed to arenaEditor_OpeningFcn via varargin.
 %      handles will be returned in the output variable h as it was, apart 
 %      from the following variables which could have been changed:
 % 
@@ -21,16 +21,16 @@ function varargout = editFieldGui(varargin)
 %
 % See also: GUIDE, GUIDATA, GUIHANDLES
 
-% Edit the above text to modify the response to help editFieldGui
+% Edit the above text to modify the response to help arenaEditor
 
-% Last Modified by GUIDE v2.5 29-Jan-2014 14:37:54
+% Last Modified by GUIDE v2.5 10-Apr-2014 21:26:48
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
 gui_State = struct('gui_Name',       mfilename, ...
                    'gui_Singleton',  gui_Singleton, ...
-                   'gui_OpeningFcn', @editFieldGui_OpeningFcn, ...
-                   'gui_OutputFcn',  @editFieldGui_OutputFcn, ...
+                   'gui_OpeningFcn', @arenaEditor_OpeningFcn, ...
+                   'gui_OutputFcn',  @arenaEditor_OutputFcn, ...
                    'gui_LayoutFcn',  [] , ...
                    'gui_Callback',   []);
 if nargin && ischar(varargin{1})
@@ -45,13 +45,13 @@ end
 % End initialization code - DO NOT EDIT
 
 
-% --- Executes just before editFieldGui is made visible.
-function editFieldGui_OpeningFcn(hObject, eventdata, handles, varargin)
+% --- Executes just before arenaEditor is made visible.
+function arenaEditor_OpeningFcn(hObject, eventdata, handles, varargin)
 % This function has no output args, see OutputFcn.
 % hObject    handle to figure
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-% varargin   command line arguments to editFieldGui (see VARARGIN)
+% varargin   command line arguments to arenaEditor (see VARARGIN)
 handlesMain = varargin{1};
 settings = handlesMain.settings;
 handles = fillEdits(hObject, handles);
@@ -82,7 +82,7 @@ handles.hAllTools = findobj('-regexp','Tag','[a-z]+Tool','-not','Tag','PreviewTo
 % set(hObject, 'visible', 'on');
 % WinOnTop(hObject);
 
-% Choose default command line output for editFieldGui
+% Choose default command line output for arenaEditor
 handles.output = hObject;
 
 % Update handles structure
@@ -93,7 +93,7 @@ uiwait(handles.figure1);
 
 
 % --- Outputs from this function are returned to the command line.
-function varargout = editFieldGui_OutputFcn(hObject, eventdata, handles) 
+function varargout = arenaEditor_OutputFcn(hObject, eventdata, handles) 
 % varargout  cell array for returning output args (see VARARGOUT);
 % hObject    handle to figure
 % eventdata  reserved - to be defined in a future version of MATLAB
