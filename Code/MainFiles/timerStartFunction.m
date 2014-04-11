@@ -8,6 +8,8 @@ set(handles.fileMenu, 'enable', 'off');
 set(handles.fileMenu, 'enable', 'off');
 set(handles.optionMenu, 'enable', 'off');
 
+set(handles.playButton, 'TooltipString', 'Stop the panic (p)');
+
 jButton = java(findjobj(handles.playButton));
 myIcon = fullfile('./icons/pause.png');
 jButton.setIcon(javax.swing.ImageIcon(myIcon));

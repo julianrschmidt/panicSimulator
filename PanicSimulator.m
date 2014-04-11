@@ -187,10 +187,8 @@ playProcedure(handles);
 function playProcedure(handles)
 buttonState = get(handles.playButton,'Value');
 if buttonState
-   set(handles.playButton, 'TooltipString', 'Stop the panic (p)');
    start(handles.timerObj);
 else    
-   set(handles.playButton, 'TooltipString', 'Start the panic (p)');
    stop(handles.timerObj);
 end
 
