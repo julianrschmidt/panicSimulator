@@ -44,6 +44,7 @@ settings.wallPositionFilename = '';% full filename to file containing at
 
 settings.dt = 0.01; %[s] simulated time step
 settings.dtPlot = 1/2; %[s] frame shown in these time steps
+settings.realTimeBool = false;
 
 end
 

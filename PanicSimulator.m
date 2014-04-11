@@ -55,11 +55,7 @@ function PanicSimulator_OpeningFcn(hObject, eventdata, handles, varargin)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Add code files to the search path:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-if strcmp(computer,'PCWIN')
-  addpath(genpath('.\Code'));
-else
-  addpath(genpath('./Code'));
-end
+addpath(genpath('./Code'));
 
 % load or generate settings
 warningsOff();
@@ -108,11 +104,17 @@ plotObj = plotInit(simulationObj, settings, handles.figure1);
 
 %create timerfunction for playing and stopping simulation
 timerFcn = @(hObj, event) updateAndPlot(hObject);
+if settings.realTimeBool
+    period = max(0.001,settings.dtPlot);
+else
+    period = 0.001;
+end
 timerObj = timer('TimerFcn', timerFcn, ...
     'StartFcn', @(hObj, event) timerStartFunction(hObject),...
     'StopFcn', @(hObj, event) timerStopFunction(hObject),...
-    'ExecutionMode', 'fixedSpacing', ...
-    'Period', 0.001, 'TasksToExecute', 9.2233e+018);
+    'ExecutionMode', 'fixedRate', ...
+    'Period', period, 'TasksToExecute', 9.2233e+018, ...
+    'BusyMode' , 'queue');
 
 % save all variables in handles
 handles.settings = settings;
@@ -289,6 +291,12 @@ set(hGuiObj,'Enable', 'off');
 closeRequestFcnTemp = get(handles.figure1, 'CloseRequestFcn');
 set(handles.figure1, 'CloseRequestFcn', '');
 [settings, resetBool] = settingsGui(handles.settings);
+if settings.realTimeBool
+    period = max(0.001,settings.dtPlot);
+else
+    period = 0.001;
+end
+set(handles.timerObj, 'Period', period);
 % make buttons active again
 for guiObjNr = 1:length(hGuiObj)
     set(hGuiObj(guiObjNr),'Enable', enableStates{guiObjNr});

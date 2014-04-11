@@ -8,7 +8,7 @@ function varargout = settingsGui(varargin)
 
 % Edit the above text to modify the response to help settingsGui
 
-% Last Modified by GUIDE v2.5 26-Jan-2014 02:13:56
+% Last Modified by GUIDE v2.5 11-Apr-2014 16:54:57
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -99,6 +99,7 @@ else
     set(handles.xMaxEdit, 'Enable', 'On');
 end
 set(handles.pressureBoolCheckbox, 'Value', double(handles.settings.pressureBool));
+set(handles.realTimeCheckbox, 'Value', double(handles.settings.realTimeBool));
 if (strcmp(handles.settings.agentPositionStyle, 'randomLeftHalf'))
     set(handles.agentPositionStylePopup, 'Value', 1);
 elseif (strcmp(handles.settings.agentPositionStyle, 'filename'))
@@ -736,3 +737,14 @@ function filesMenu_Callback(hObject, eventdata, handles)
 % hObject    handle to filesMenu (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+
+
+% --- Executes on button press in realTimeCheckbox.
+function realTimeCheckbox_Callback(hObject, eventdata, handles)
+% hObject    handle to realTimeCheckbox (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hint: get(hObject,'Value') returns toggle state of realTimeCheckbox
+handles.settings.realTimeBool = logical(get(hObject, 'Value'));
+guidata(hObject, handles);
