@@ -103,7 +103,7 @@ if resetBool
     plotObj = handles.plotObj;
     delete(plotObj.hCells);
     delete(plotObj.hAgents);
-    delete(plotObj.hWalls);     
+    delete(plotObj.hColumns);     
     delete(plotObj.hWallLines);
     plotObj = plotInit(simulationObj, settings, handles.figure1);
 

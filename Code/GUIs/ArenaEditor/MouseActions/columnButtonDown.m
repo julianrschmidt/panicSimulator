@@ -45,9 +45,9 @@ elseif strcmp(clickStyle, 'alt')
     % delete all traces of wall
     delete(currentWallHandle);
     columns(currentWallId,:) = [];    
-    handles.plotObj.hWalls(currentWallId) = [];
-    for j = (currentWallId):length(handles.plotObj.hWalls);
-        set(handles.plotObj.hWalls(j), 'UserData', [2,j]);
+    handles.plotObj.hColumns(currentWallId) = [];
+    for j = (currentWallId):length(handles.plotObj.hColumns);
+        set(handles.plotObj.hColumns(j), 'UserData', [2,j]);
     end
     handles.currentWallId = 0;
     handles.simulationObj.columns = columns;

@@ -64,10 +64,10 @@ plotObj = plotInit(simulationObj, settings, handles.figure1);
 % guidata(get(gca, 'UserData')) returns handles
 set(handles.axes1, 'UserData', hObject);
 hAgents = plotObj.hAgents;
-hWalls = plotObj.hWalls;
+hColumns = plotObj.hColumns;
 hWallLines = plotObj.hWallLines;
 hExit = plotObj.hExit;
-set([hAgents(:); hWalls(:); hWallLines(:); hExit(:)],'ButtonDownFcn', @objectButtonDown);   
+set([hAgents(:); hColumns(:); hWallLines(:); hExit(:)],'ButtonDownFcn', @objectButtonDown);   
 
 handles.currentAgentId = 0;
 handles.currentWallId = 0;
@@ -319,7 +319,7 @@ if currentWallId ~= 0
     columns = handles.simulationObj.columns;
     radius = num;
     columns(currentWallId, 3) = radius;
-    hWall = handles.plotObj.hWalls(currentWallId);   
+    hWall = handles.plotObj.hColumns(currentWallId);   
     x = columns(currentWallId, 1);
     y = columns(currentWallId, 2);
     set(hWall, 'Position', [x-radius, y-radius, 2*radius, 2*radius]);
@@ -386,15 +386,15 @@ if filterIndex ~= 0
             handles.simulationObj.columns = columns;
             handles.simulationObj.wallLines = wallLines;
             handles.simulationObj.exitCoord = exitCoord;
-            delete(handles.plotObj.hWalls);
+            delete(handles.plotObj.hColumns);
             delete(handles.plotObj.hWallLines);
             delete(handles.plotObj.hExit);
-            hWalls = zeros(1, size(columns, 1));
-            for j = 1:length(hWalls) 
-                hWalls(j) = plotWallColumn(columns(j,1), columns(j,2), columns(j,3));
-                set(hWalls(j), 'UserData', [2,j]);
+            hColumns = zeros(1, size(columns, 1));
+            for j = 1:length(hColumns) 
+                hColumns(j) = plotWallColumn(columns(j,1), columns(j,2), columns(j,3));
+                set(hColumns(j), 'UserData', [2,j]);
             end
-            handles.plotObj.hWalls = hWalls;
+            handles.plotObj.hColumns = hColumns;
             NWallLines = size(wallLines, 1);
             hWallLines = zeros(1, NWallLines);
             for j = 1:NWallLines
@@ -409,7 +409,7 @@ if filterIndex ~= 0
             set(hExit(2), 'UserData', [4, hExit(1)]);
             
             if strcmp(handles.oldTool, 'modifyObjectTool')
-                set([hWalls(:); hWallLines(:); hExit(:)],'ButtonDownFcn', @objectButtonDown);   
+                set([hColumns(:); hWallLines(:); hExit(:)],'ButtonDownFcn', @objectButtonDown);   
             end
 
             guidata(hObject, handles);
@@ -448,8 +448,8 @@ function clearWallsMenu_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 columns = [];
 handles.simulationObj.columns = columns;
-delete(handles.plotObj.hWalls);
-handles.plotObj.hWalls = [];
+delete(handles.plotObj.hColumns);
+handles.plotObj.hColumns = [];
 handles.simulationObj.wallLines = [];
 delete(handles.plotObj.hWallLines);
 handles.plotObj.hWallLines = [];
@@ -496,13 +496,13 @@ elseif strcmp(eventdata.Key, 'delete')
         guidata(hObject, handles);
     elseif currentWallId ~= 0
         columns = handles.simulationObj.columns;
-        currentWallHandle = handles.plotObj.hWalls(currentWallId);
+        currentWallHandle = handles.plotObj.hColumns(currentWallId);
         % delete all traces of wall
         delete(currentWallHandle);
         columns(currentWallId,:) = [];    
-        handles.plotObj.hWalls(currentWallId) = [];
-        for j = (currentWallId):length(handles.plotObj.hWalls);
-            set(handles.plotObj.hWalls(j), 'UserData', [2,j]);
+        handles.plotObj.hColumns(currentWallId) = [];
+        for j = (currentWallId):length(handles.plotObj.hColumns);
+            set(handles.plotObj.hColumns(j), 'UserData', [2,j]);
         end
         handles.currentWallId = 0;
         handles.simulationObj.columns = columns;
@@ -576,10 +576,10 @@ switch oldTool
         set(hCells, 'ButtonDownFcn', ''); 
     case 'modifyObjectTool'
         hAgents = handles.plotObj.hAgents;
-        hWalls = handles.plotObj.hWalls;
+        hColumns = handles.plotObj.hColumns;
         hWallLines = handles.plotObj.hWallLines;
         hExit = handles.plotObj.hExit;
-        set([hAgents(:); hWalls(:); hWallLines(:); hExit(:)],'ButtonDownFcn',''); 
+        set([hAgents(:); hColumns(:); hWallLines(:); hExit(:)],'ButtonDownFcn',''); 
 end
 % some general tidying up
 set(handles.infoText, 'String', ...
@@ -640,10 +640,10 @@ switch newTool
         set(handles.infoText, 'String', ...
             '   Left click: move object   Right click: delete object');
         hAgents = handles.plotObj.hAgents;
-        hWalls = handles.plotObj.hWalls;
+        hColumns = handles.plotObj.hColumns;
         hWallLines = handles.plotObj.hWallLines;
         hExit = handles.plotObj.hExit;
-        set([hAgents(:); hWalls(:); hWallLines(:); hExit(:)],'ButtonDownFcn', @objectButtonDown);   
+        set([hAgents(:); hColumns(:); hWallLines(:); hExit(:)],'ButtonDownFcn', @objectButtonDown);   
 end
 handles.oldTool = newTool;
 guidata(hObject, handles);

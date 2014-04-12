@@ -11,13 +11,13 @@ figure(hFigure);
 % plot the grid
 hCells = plotGrid([0, settings.xMax, 0, settings.yMax]);
 % plot agents and columns
-[hAgents, hWalls, hWallLines, hExit] = plotAgents(agents, columns, wallLines, exitCoord, settings.xMax, settings.yMax);
+[hAgents, hColumns, hWallLines, hExit] = plotAgents(agents, columns, wallLines, exitCoord, settings.xMax, settings.yMax);
 daspect([1,1,1]);
 % hold off;
 
 plotObj.hAgents = hAgents;
 plotObj.hCells = hCells;
-plotObj.hWalls = hWalls;
+plotObj.hColumns = hColumns;
 plotObj.hWallLines = hWallLines;
 plotObj.hExit = hExit;
 

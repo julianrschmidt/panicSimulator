@@ -24,10 +24,10 @@ handles.simulationObj.columns = [handles.simulationObj.columns; newWalls];
 hNewWalls = zeros(1, size(newWalls, 1));
 for j = 1:length(hNewWalls)
     hNewWalls(j) = plotWallColumn(newWalls(j,1), newWalls(j,2), newWalls(j,3));
-    set(hNewWalls(j), 'UserData', [2,j + length(handles.plotObj.hWalls)]);
+    set(hNewWalls(j), 'UserData', [2,j + length(handles.plotObj.hColumns)]);
 end
 
-handles.plotObj.hWalls = [handles.plotObj.hWalls, hNewWalls];
+handles.plotObj.hColumns = [handles.plotObj.hColumns, hNewWalls];
 
 % tidy up
 handles = rmfield(handles, 'temp');

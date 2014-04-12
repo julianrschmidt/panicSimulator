@@ -12,7 +12,7 @@ if strcmp(clickStyle, 'normal')
     currentPoint = currentPoint(1,[1,2]);
     
     % determine new wall id
-    currentWallId = length(handles.plotObj.hWalls) + 1;
+    currentWallId = length(handles.plotObj.hColumns) + 1;
     % get all desired wall properties
     wallRadius = str2double(get(handles.wallRadiusEdit, 'String'));
     
@@ -22,7 +22,7 @@ if strcmp(clickStyle, 'normal')
     
     % plot wall, save wall id and store wall handle
     hNewWall = plotWallColumn(newWall(1), newWall(2), newWall(3));
-    handles.plotObj.hWalls = [handles.plotObj.hWalls, hNewWall];
+    handles.plotObj.hColumns = [handles.plotObj.hColumns, hNewWall];
     set(hNewWall, 'UserData', [2,currentWallId]);
     
     % update the object information text
