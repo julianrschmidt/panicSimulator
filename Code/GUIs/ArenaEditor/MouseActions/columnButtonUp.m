@@ -10,12 +10,12 @@ handles = guidata(thisfig);
 xyDiff = get(gca,'CurrentPoint') - handles.temp.startpoint;
 xyDiff = xyDiff(1,[1,2]);
 % update wall data
-handles.simulationObj.walls(handles.currentWallId,[1 2]) = ...
-    handles.simulationObj.walls(handles.currentWallId,[1 2]) + xyDiff;
+handles.simulationObj.columns(handles.currentWallId,[1 2]) = ...
+    handles.simulationObj.columns(handles.currentWallId,[1 2]) + xyDiff;
 
 % update x and y text fields
-set(handles.xText, 'string', sprintf('%.2f', handles.simulationObj.walls(handles.currentWallId, 1)));
-set(handles.yText, 'string', sprintf('%.2f', handles.simulationObj.walls(handles.currentWallId, 2)));
+set(handles.xText, 'string', sprintf('%.2f', handles.simulationObj.columns(handles.currentWallId, 1)));
+set(handles.yText, 'string', sprintf('%.2f', handles.simulationObj.columns(handles.currentWallId, 2)));
 
 % delete temporary field 'temp' in handles
 handles = rmfield(handles, 'temp');

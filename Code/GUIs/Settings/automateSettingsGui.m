@@ -173,7 +173,7 @@ end
 
 if get(handles.automate3Checkbox, 'Value') == 1
         automateObj{1} = [automateObj{1}, 3];
-        automateObj3 = setInitAutomate(3,handles.settings);
+        automateObj3 = createAutomateObj(3,handles.settings);
         automateObj = [automateObj, automateObj3{2}];
 end
 handles.automateObj = automateObj;

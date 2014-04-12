@@ -1,5 +1,5 @@
-function [ value,isterminal,direction ] = event_function( t, y, aims )
-%EVENT_FUNCTION Summary of this function goes here
+function [ value,isterminal,direction ] = odeEventFunction( t, y, aims )
+%ODEEVENTFUNCTION Summary of this function goes here
 %   Detailed explanation goes here
 NAgent = length(y)/4;
 throughDoor = double(isLeft(aims(:,3:4),aims(:,1:2),[y(1:NAgent), y(NAgent+1:2*NAgent)]));

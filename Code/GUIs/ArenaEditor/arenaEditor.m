@@ -7,14 +7,14 @@ function varargout = arenaEditor(varargin)
 % 
 %      settings
 %      agents
-%      walls
+%      columns
 %
 %      The input is passed to arenaEditor_OpeningFcn via varargin.
 %      handles will be returned in the output variable h as it was, apart 
 %      from the following variables which could have been changed:
 % 
 %      agents
-%      walls
+%      columns
 %
 %      *See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
 %      instance to run (singleton)".
@@ -175,12 +175,12 @@ function saveWallsAsMenu_Callback(hObject, eventdata, handles)
 % hObject    handle to saveWallsAsMenu (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-walls = handles.simulationObj.walls;
+columns = handles.simulationObj.columns;
 wallLines = handles.simulationObj.wallLines;
 exitCoord = handles.simulationObj.exitCoord;
-[filename, pathname, FilterIndex] = uiputfile('*.mat', 'Save walls as...', './presets/walls.mat');
+[filename, pathname, FilterIndex] = uiputfile('*.mat', 'Save columns as...', './presets/columns.mat');
 if (FilterIndex ~= 0)
-    save([pathname, filename], 'walls', 'wallLines', 'exitCoord');
+    save([pathname, filename], 'columns', 'wallLines', 'exitCoord');
 end
 
 function agentRadiusEdit_Callback(hObject, eventdata, handles)
@@ -316,14 +316,14 @@ else
 end
 currentWallId = handles.currentWallId;
 if currentWallId ~= 0
-    walls = handles.simulationObj.walls;
+    columns = handles.simulationObj.columns;
     radius = num;
-    walls(currentWallId, 3) = radius;
+    columns(currentWallId, 3) = radius;
     hWall = handles.plotObj.hWalls(currentWallId);   
-    x = walls(currentWallId, 1);
-    y = walls(currentWallId, 2);
+    x = columns(currentWallId, 1);
+    y = columns(currentWallId, 2);
     set(hWall, 'Position', [x-radius, y-radius, 2*radius, 2*radius]);
-    handles.simulationObj.walls = walls;
+    handles.simulationObj.columns = columns;
     guidata(hObject, handles);
 end
 
@@ -376,22 +376,22 @@ function openWallsMenu_Callback(hObject, eventdata, handles)
 % hObject    handle to openWallsMenu (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-[fileName, pathName, filterIndex] = uigetfile('*.mat', 'Load Walls...', './presets/walls.mat');
+[fileName, pathName, filterIndex] = uigetfile('*.mat', 'Load Walls...', './presets/columns.mat');
 if filterIndex ~= 0
-    if sum(strcmp(who('-file', [pathName, fileName]), 'walls')) == 1 && ...
+    if sum(strcmp(who('-file', [pathName, fileName]), 'columns')) == 1 && ...
             sum(strcmp(who('-file', [pathName, fileName]), 'wallLines')) == 1 && ...
             sum(strcmp(who('-file', [pathName, fileName]), 'exitCoord')) == 1
-        load([pathName, fileName], 'walls', 'wallLines', 'exitCoord');
-        if validateWalls(walls) && validateWallLines(wallLines) &&validateExitCoord(exitCoord)
-            handles.simulationObj.walls = walls;
+        load([pathName, fileName], 'columns', 'wallLines', 'exitCoord');
+        if validateColumns(columns) && validateWallLines(wallLines) &&validateExitCoord(exitCoord)
+            handles.simulationObj.columns = columns;
             handles.simulationObj.wallLines = wallLines;
             handles.simulationObj.exitCoord = exitCoord;
             delete(handles.plotObj.hWalls);
             delete(handles.plotObj.hWallLines);
             delete(handles.plotObj.hExit);
-            hWalls = zeros(1, size(walls, 1));
+            hWalls = zeros(1, size(columns, 1));
             for j = 1:length(hWalls) 
-                hWalls(j) = plotWallCircle(walls(j,1), walls(j,2), walls(j,3));
+                hWalls(j) = plotWallColumn(columns(j,1), columns(j,2), columns(j,3));
                 set(hWalls(j), 'UserData', [2,j]);
             end
             handles.plotObj.hWalls = hWalls;
@@ -446,8 +446,8 @@ function clearWallsMenu_Callback(hObject, eventdata, handles)
 % hObject    handle to clearWallsMenu (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-walls = [];
-handles.simulationObj.walls = walls;
+columns = [];
+handles.simulationObj.columns = columns;
 delete(handles.plotObj.hWalls);
 handles.plotObj.hWalls = [];
 handles.simulationObj.wallLines = [];
@@ -495,17 +495,17 @@ elseif strcmp(eventdata.Key, 'delete')
         handles.currentAgentId = 0;
         guidata(hObject, handles);
     elseif currentWallId ~= 0
-        walls = handles.simulationObj.walls;
+        columns = handles.simulationObj.columns;
         currentWallHandle = handles.plotObj.hWalls(currentWallId);
         % delete all traces of wall
         delete(currentWallHandle);
-        walls(currentWallId,:) = [];    
+        columns(currentWallId,:) = [];    
         handles.plotObj.hWalls(currentWallId) = [];
         for j = (currentWallId):length(handles.plotObj.hWalls);
             set(handles.plotObj.hWalls(j), 'UserData', [2,j]);
         end
         handles.currentWallId = 0;
-        handles.simulationObj.walls = walls;
+        handles.simulationObj.columns = columns;
         % Update handles structure
         guidata(hObject, handles);
     elseif currentWallLineId ~= 0;
@@ -628,7 +628,7 @@ switch newTool
         set(hCells, 'ButtonDownFcn', @circleOfColumnsButtonDown);
     case 'newWallTool'   
         set(handles.infoText, 'String', ...
-            '   Click and drag to draw new walls.');
+            '   Click and drag to draw new columns.');
         hCells = handles.plotObj.hCells;    
         set(hCells, 'ButtonDownFcn', @newWallLineButtonDown);
     case 'newExitTool'   

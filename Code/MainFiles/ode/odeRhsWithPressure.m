@@ -1,7 +1,7 @@
 %rhs.m: function file for use with ode45 
 %rhs.m: returns right hand side of 1st order ODE "d(rv)/dt = f(t,rv)"
 
-function out = rhs3Col(~,odeVec,radii,walls,wallLines, exitCoord, settings, hObject) % input: time vector dt and initial state vector odeVec
+function out = odeRhsWithPressure(~,odeVec,radii,columns,wallLines, exitCoord, settings, hObject) % input: time vector dt and initial state vector odeVec
 % initial state vector 'odeVec' is a row vector:
 % x(agent1),...,x(agentN),y(agent1),...,y(agentN),vx(agent1),...,vx(agentN),vy(agent1),...,vy(agentN)
 
@@ -138,12 +138,12 @@ end
 agentForceVecX = agentForceVecX + sum(forceMatrixX, 2);
 agentForceVecY = agentForceVecY + sum(forceMatrixY, 2);
 %---forceIW----------------------------------------------------------------
-if size(walls, 1) > 0
-    [mesh1radi, mesh2radi] = meshgrid(walls(:,3),agents(:,5));
+if size(columns, 1) > 0
+    [mesh1radi, mesh2radi] = meshgrid(columns(:,3),agents(:,5));
     rij = mesh1radi + mesh2radi; %radius of agent i + radius of agent j Matrix
 
-    [mesh1X, mesh2X] = meshgrid(walls(:,1),agents(:,1));
-    [mesh1Y, mesh2Y] = meshgrid(walls(:,2),agents(:,2));
+    [mesh1X, mesh2X] = meshgrid(columns(:,1),agents(:,1));
+    [mesh1Y, mesh2Y] = meshgrid(columns(:,2),agents(:,2));
     distanceMatrixX = mesh2X-mesh1X; % distance matrix in x direction
     distanceMatrixY = mesh2Y-mesh1Y; % distance matirx in y direction
     dij = sqrt(distanceMatrixX.^2+distanceMatrixY.^2); %center of mass distance between agents i&j Matrtix
@@ -167,8 +167,8 @@ if size(walls, 1) > 0
 
         radialForceMatrix = body;
 
-        meshvx = repmat(agents(:,3), 1, size(walls, 1));
-        meshvy = repmat(agents(:,4), 1, size(walls, 1));
+        meshvx = repmat(agents(:,3), 1, size(columns, 1));
+        meshvy = repmat(agents(:,4), 1, size(columns, 1));
 
         sliding = -kappa*deltaij.*touching.*(-meshvx.*nyij + meshvy.*nxij);
 

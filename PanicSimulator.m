@@ -64,13 +64,13 @@ if exist('presets/defaultSettings.mat', 'file') == 2
         load('presets/defaultSettings.mat', 'settings');
         if validateSettings(settings)
         else
-            settings = setInitCond();   
+            settings = createDefaultSettings();   
         end
     else
-        settings = setInitCond();
+        settings = createDefaultSettings();
     end
 else
-    settings = setInitCond();
+    settings = createDefaultSettings();
 end
 % load or generate automate object
 if exist('presets/defaultAutomateSettings.mat', 'file') == 2
@@ -93,17 +93,17 @@ end
 
 % true if drawn images are captured
 handles.captureBool = false;
-%generate agents, walls  in dependence on settings
-simulationObj = initArena(settings, cell(0));
+%generate agents, columns  in dependence on settings
+simulationObj = createSimulationObj(settings, cell(0));
 
 %set time for simulation and plot
-simulationObj = initSimulationObj(simulationObj);
+simulationObj = resetSimulationObj(simulationObj);
 
 %plot everything
 plotObj = plotInit(simulationObj, settings, handles.figure1);
 
 %create timerfunction for playing and stopping simulation
-timerFcn = @(hObj, event) updateAndPlot(hObject);
+timerFcn = @(hObj, event) timerFunction(hObject);
 if settings.realTimeBool
     period = max(0.001,settings.dtPlot);
 else
@@ -213,11 +213,11 @@ function handles = resetProcedure(handles)
 dispAutomateStatus(handles);
 set(handles.timeText, 'string', secondsToTimeString(0));
 
-%generate agents, walls in dependence on settings
-simulationObj = initArena(handles.settings, cell(0));
+%generate agents, columns in dependence on settings
+simulationObj = createSimulationObj(handles.settings, cell(0));
 
 % from here everything similar to opening_fcn
-simulationObj = initSimulationObj(simulationObj);
+simulationObj = resetSimulationObj(simulationObj);
 
 plotObj = handles.plotObj;
 delete(plotObj.hCells);

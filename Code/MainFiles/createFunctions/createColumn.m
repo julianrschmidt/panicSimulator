@@ -1,5 +1,5 @@
-function [ wallPoints ] = generateWallCircle( midPointX, midPointY, radius, wallRadiusMax )
-%UNTITLED4 Summary of this function goes here
+function [ wallPoints ] = createColumn( midPointX, midPointY, radius, wallRadiusMax )
+%CREATECOLUMN Summary of this function goes here
 %   Detailed explanation goes here
 
 NPoints = floor(pi*radius/wallRadiusMax); %number of wall points

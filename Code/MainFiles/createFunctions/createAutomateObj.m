@@ -1,5 +1,5 @@
-function [ automateObj, settings ] = setInitAutomate( automateNrList, settings )
-%SETINITAUTOMATE Summary of this function goes here
+function [ automateObj, settings ] = createAutomateObj( automateNrList, settings )
+%CREATEAUTOMATEOBJ Summary of this function goes here
 %   Detailed explanation goes here
 automateObj = cell(length(automateNrList) + 1,1);
 automateObj{1} = automateNrList;

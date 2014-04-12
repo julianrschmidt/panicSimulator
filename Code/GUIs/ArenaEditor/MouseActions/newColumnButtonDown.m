@@ -18,10 +18,10 @@ if strcmp(clickStyle, 'normal')
     
     % store new wall
     newWall = [currentPoint, wallRadius];
-    handles.simulationObj.walls = [handles.simulationObj.walls; newWall];
+    handles.simulationObj.columns = [handles.simulationObj.columns; newWall];
     
     % plot wall, save wall id and store wall handle
-    hNewWall = plotWallCircle(newWall(1), newWall(2), newWall(3));
+    hNewWall = plotWallColumn(newWall(1), newWall(2), newWall(3));
     handles.plotObj.hWalls = [handles.plotObj.hWalls, hNewWall];
     set(hNewWall, 'UserData', [2,currentWallId]);
     

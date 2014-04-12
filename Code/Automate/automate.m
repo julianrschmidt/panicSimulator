@@ -96,8 +96,8 @@ end
 settings = settingsNew;
 
 if resetBool
-    simulationObj = initArena(settings, simulationObj);
-    simulationObj = initSimulationObj(simulationObj);
+    simulationObj = createSimulationObj(settings, simulationObj);
+    simulationObj = resetSimulationObj(simulationObj);
     set(handles.timeText, 'string', secondsToTimeString(0));
 
     plotObj = handles.plotObj;

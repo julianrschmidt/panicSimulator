@@ -1,5 +1,5 @@
-function [ agents ] = generateAgents( settings ) 
-%GENERATEAGENTS generates agent matrix randomly in the rectangle defined by
+function [ agents ] = createAgents( settings ) 
+%CREATEAGENTS generates agent matrix randomly in the rectangle defined by
 % [xMin, yMin, xMax, yMax]
 % vMean, vVar - absolute velocity of one agent is gamma distributed with
 %               mean value vMean and variance vVar. The angle of direction

@@ -1,5 +1,5 @@
-function [ settings ] = setInitCond(  )
-%SETINITCOND this function can be called to produce a standard settings 
+function [ settings ] = createDefaultSettings(  )
+%CREATEDEFAULTSETTINGS this function can be called to produce a standard settings 
 % structure
 % settings.automateNrList = 1; % case1 = different vDes
 settings.A = 2000; %force in [Newton]
@@ -15,7 +15,7 @@ settings.NAgent = 10; % number of agents created if they are randomly created
 settings.border = 2; % border in grid
 settings.yMax = 30; %[m] length of arena in y direction
 settings.doorWidth = 1; %[m]    % width of door, only relevant if standard 
-                                % walls are created
+                                % columns are created
 
 
 % agent settings
@@ -39,7 +39,7 @@ settings.agentPositionFilename = ''; % full filename to file containing at
 % established are 'standard' and 'random' (28.11.)
 settings.wallPositionStyle = 'standard';
 settings.wallPositionFilename = '';% full filename to file containing at
-                                    % least the variable walls
+                                    % least the variable columns
 
 
 settings.dt = 0.01; %[s] simulated time step

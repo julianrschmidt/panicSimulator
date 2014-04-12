@@ -1,5 +1,5 @@
 function newWallLineButtonUp( src, evnt )
-%NEWWALLLINEBUTTONUP draws final line of walls and store new wall
+%NEWWALLLINEBUTTONUP draws final line of columns and store new wall
 thisfig = gcf();
 set(thisfig,'WindowButtonUpFcn','');
 set(thisfig,'WindowButtonMotionFcn','');

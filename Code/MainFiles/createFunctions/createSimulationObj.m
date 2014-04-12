@@ -1,7 +1,7 @@
-function simulationObj = initArena( settings, simulationObj)
-%INITARENA generates agent matrix and wall matrix in dependence on settings
+function simulationObj = createSimulationObj( settings, simulationObj)
+%CREATESIMULATIONOBJ generates agent matrix and wall matrix in dependence on settings
 %   agents: [x, y, vx, vy, radius]
-%   walls: [x, y, radius]
+%   columns: [x, y, radius]
 
 % copying the settings variables to local variables
 xMax = settings.xMax;%[m]
@@ -14,7 +14,7 @@ wallAngle = settings.wallAngle;
                     
 %% generate Agents
 if strcmp(settings.agentPositionStyle, 'randomLeftHalf')
-    agents = generateAgents(settings); 
+    agents = createAgents(settings); 
 elseif strcmp(settings.agentPositionStyle,'filename')
     if exist(settings.agentPositionFilename, 'file') == 2
         if sum(strcmp(who('-file', settings.agentPositionFilename), 'agents')) == 1
@@ -39,7 +39,7 @@ end
 %% generate Walls
 % generate exit
 exitCoord = [xMax - border, yMax/2 - doorWidth/2, xMax - border, yMax/2 + doorWidth/2];
-walls = [];
+columns = [];
 wallLines = [];
 
 XIntersect = 0.5*(settings.yMax-settings.doorWidth)*tan(settings.wallAngle); % wall minimum in x direction
@@ -53,14 +53,14 @@ if strcmp(settings.wallPositionStyle, 'standard')
                     xMax - border, yMax/2 + doorWidth/2, 0, yMax/2 + doorWidth/2 + (xMax-border)/tan(wallAngle)];
     end
 
-    walls = [];
+    columns = [];
 elseif strcmp(settings.wallPositionStyle, 'filename')
     if exist(settings.wallPositionFilename, 'file') == 2
-        if sum(strcmp(who('-file', settings.wallPositionFilename), 'walls')) == 1 &&...
+        if sum(strcmp(who('-file', settings.wallPositionFilename), 'columns')) == 1 &&...
                 sum(strcmp(who('-file', settings.wallPositionFilename), 'wallLines')) == 1 &&...
                 sum(strcmp(who('-file', settings.wallPositionFilename), 'exitCoord')) == 1
-            load(settings.wallPositionFilename, 'walls', 'wallLines', 'exitCoord');
-            if validateWalls(walls) && validateWallLines(wallLines) &&validateExitCoord(exitCoord)
+            load(settings.wallPositionFilename, 'columns', 'wallLines', 'exitCoord');
+            if validateColumns(columns) && validateWallLines(wallLines) &&validateExitCoord(exitCoord)
             else
                 errorOpenFileGui('filename',settings.wallPositionFilename);
             end
@@ -75,7 +75,7 @@ end
 
 %% save all in simulationObj
 simulationObj.agents = agents;
-simulationObj.walls = walls;
+simulationObj.columns = columns;
 simulationObj.exitCoord = exitCoord;
 simulationObj.wallLines = wallLines;
 end

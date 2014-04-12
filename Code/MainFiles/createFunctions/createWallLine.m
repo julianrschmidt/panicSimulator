@@ -1,5 +1,5 @@
-function [ WallPoints ] = generateWallLine( Xstart, Ystart, Xend, Yend, radiusMax )
-%GENERATEWALLLINE returns coordinates of the center of equally distant 
+function [ WallPoints ] = createWallLine( Xstart, Ystart, Xend, Yend, radiusMax )
+%CREATEWALLLINE returns coordinates of the center of equally distant 
 % points on a line or lines from [Xstart, Ystart] to [Xend, Yend].
 % Each point has a maximum radius of radiusMax. 
 % A minimum nummber of points is created. 

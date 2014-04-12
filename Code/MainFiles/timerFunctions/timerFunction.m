@@ -1,5 +1,5 @@
-function updateAndPlot( hObject)
-%UPDATEANDPLOT calls the updateAgent function and plots the new matrix if
+function timerFunction( hObject)
+%TIMERFUNCTION calls the updateAgent function and plots the new matrix if
 % necessary, also captures the plot if captureBool == true
 handles = guidata(hObject);
 settings = handles.settings;
@@ -10,7 +10,7 @@ captureBool = handles.captureBool;
 if size(handles.simulationObj.agents, 1) ~= 0
 
     % t1 = tic;
-    simulationObj = updateAgents(simulationObj, settings, hObject);
+    simulationObj = agentsStep(simulationObj, settings, hObject);
     % toc(t1);
 
     plotUpdate(hAgents, simulationObj.agents, simulationObj.pressure);

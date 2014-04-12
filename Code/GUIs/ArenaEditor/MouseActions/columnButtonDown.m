@@ -6,7 +6,7 @@ handles = guidata(thisfig);
 clickStyle = get(gcbf, 'SelectionType'); % 'normal' for left and 
                                          % 'alt' for right click
                                          
-walls = handles.simulationObj.walls;
+columns = handles.simulationObj.columns;
 % left click
 if strcmp(clickStyle, 'normal')
     usrData = get(src, 'UserData');
@@ -17,11 +17,11 @@ if strcmp(clickStyle, 'normal')
     
     % fill all wall information fields with wall information
     set(handles.idText, 'string', sprintf('%d', handles.currentWallId));
-    set(handles.xText, 'string', sprintf('%.2f', walls(handles.currentWallId, 1)));
-    set(handles.yText, 'string', sprintf('%.2f', walls(handles.currentWallId, 2)));
+    set(handles.xText, 'string', sprintf('%.2f', columns(handles.currentWallId, 1)));
+    set(handles.yText, 'string', sprintf('%.2f', columns(handles.currentWallId, 2)));
    
     % obtain all information about wall
-    radius = walls(handles.currentWallId, 3);
+    radius = columns(handles.currentWallId, 3);
     % fill all wall edit fields with wall information
     set(handles.wallRadiusEdit, 'string', sprintf('%.2f', radius));  
     handles.lastValidEditValues.wallRadius = radius;
@@ -44,13 +44,13 @@ elseif strcmp(clickStyle, 'alt')
     currentWallHandle = src;
     % delete all traces of wall
     delete(currentWallHandle);
-    walls(currentWallId,:) = [];    
+    columns(currentWallId,:) = [];    
     handles.plotObj.hWalls(currentWallId) = [];
     for j = (currentWallId):length(handles.plotObj.hWalls);
         set(handles.plotObj.hWalls(j), 'UserData', [2,j]);
     end
     handles.currentWallId = 0;
-    handles.simulationObj.walls = walls;
+    handles.simulationObj.columns = columns;
     % Update handles structure
     guidata(thisfig, handles);
 end

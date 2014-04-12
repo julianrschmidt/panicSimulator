@@ -1,6 +1,6 @@
 function circleOfColumnsButtonUp( src, evnt )
 %CIRCLEOFCOLUMNSBUTTONUP delete line drawn by lineOfColumnsButtonDown, draw line of
-%walls and store new wall objects in the walls matrix
+%columns and store new wall objects in the columns matrix
 thisfig = gcf();
 set(thisfig,'WindowButtonUpFcn','');
 set(thisfig,'WindowButtonMotionFcn','');
@@ -14,17 +14,17 @@ r = norm(endPoint-startPoint);
 % delete line drawn by lineOfColumnsButtonDown
 delete(handles.temp.hCircle);
 
-% get maximum radius of walls
+% get maximum radius of columns
 radiusMax = str2double(get(handles.wallRadiusEdit, 'String'));
 
-% generate line of walls
-newWalls = generateWallCircle(startPoint(1), startPoint(2), r, radiusMax);
-handles.simulationObj.walls = [handles.simulationObj.walls; newWalls];
+% generate line of columns
+newWalls = createColumn(startPoint(1), startPoint(2), r, radiusMax);
+handles.simulationObj.columns = [handles.simulationObj.columns; newWalls];
 
 % store wall id in wall drawings
 hNewWalls = zeros(1, size(newWalls, 1));
 for j = 1:length(hNewWalls)
-    hNewWalls(j) = plotWallCircle(newWalls(j,1), newWalls(j,2), newWalls(j,3));
+    hNewWalls(j) = plotWallColumn(newWalls(j,1), newWalls(j,2), newWalls(j,3));
     set(hNewWalls(j), 'UserData', [2,j + length(handles.plotObj.hWalls)]);
 end
 
