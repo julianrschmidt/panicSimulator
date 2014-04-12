@@ -1,4 +1,4 @@
-function statistic( hObject, handles )
+function handles = statistic( handles )
 %STATISTIC Summary of this function goes here
 %   Detailed explanation goes here
 settings = handles.settings;
@@ -16,7 +16,6 @@ for index = 2:length(statisticNrList) + 1
                 
                 averageIndex = statisticObj{index}.averageIndex;
                 vDesIndex = statisticObj{index}.vDesIndex;
-                disp(vDesIndex);
                 
                 statisticObj{index}.timeNeeded(vDesIndex) = statisticObj{index}.timeNeeded(vDesIndex) + simulationObj.tSimulation;
                 
@@ -50,7 +49,6 @@ for index = 2:length(statisticNrList) + 1
             if sum(isLeft(exitCoord(1:2),exitCoord(3:4), simulationObj.agents(:,1:2))) == 0
                 averageIndex = statisticObj{index}.averageIndex;
                 wallAngleIndex = statisticObj{index}.wallAngleIndex;
-                disp(wallAngleIndex);
                 statisticObj{index}.timeNeeded(wallAngleIndex) = statisticObj{index}.timeNeeded(wallAngleIndex) + simulationObj.tSimulation;
                 
                 averageIndex = averageIndex + 1;
@@ -114,8 +112,5 @@ if resetBool
 end
 
 handles.settings = settings;
-
-% Update handles structure
-guidata(hObject, handles);
 end
 

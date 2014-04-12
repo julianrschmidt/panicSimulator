@@ -22,7 +22,7 @@ function varargout = PanicSimulator(varargin)
 
 % Edit the above text to modify the response to help PanicSimulator
 
-% Last Modified by GUIDE v2.5 10-Apr-2014 21:30:18
+% Last Modified by GUIDE v2.5 12-Apr-2014 13:01:45
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -123,6 +123,8 @@ handles.plotObj = plotObj;
 handles.timerObj = timerObj;
 handles.statisticObj = statisticObj;
 
+dispStatisticStatus(handles);
+
 set(handles.playButton, 'String', '');
 jButton = java(findjobj(handles.playButton));
 
@@ -208,6 +210,7 @@ guidata(hObject, handles);
 
 function handles = resetProcedure(handles)
 [handles.statisticObj, handles.settings] = resetStatisticObj(handles.statisticObj, handles.settings, 0);
+dispStatisticStatus(handles);
 set(handles.timeText, 'string', secondsToTimeString(0));
 
 %generate agents, walls in dependence on settings
@@ -373,6 +376,7 @@ set(hGuiObj,'Enable', 'off');
 closeRequestFcnTemp = get(handles.figure1, 'CloseRequestFcn');
 set(handles.figure1, 'CloseRequestFcn', '');
 handles = statisticSettingsGui(handles);
+dispStatisticStatus(handles);
 for guiObjNr = 1:length(hGuiObj)
     set(hGuiObj(guiObjNr),'Enable', enableStates{guiObjNr});
 end
@@ -424,4 +428,27 @@ elseif strcmp(eventdata.Key, 'r') && numel(eventdata.Modifier) == 0
         resetProcedure(hObject, handles);
     end
     
+end
+
+
+
+function infoText_Callback(hObject, eventdata, handles)
+% hObject    handle to infoText (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of infoText as text
+%        str2double(get(hObject,'String')) returns contents of infoText as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function infoText_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to infoText (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
 end
