@@ -1,20 +1,20 @@
-function varargout = statisticSettingsGui(varargin)
-% STATISTICSETTINGSGUI MATLAB code for statisticSettingsGui.fig
-%      settingsOut = STATISTICSETTINGSGUI(handlesMain) creates a new STATISTICSETTINGSGUI. 
-%      The input handles is passed to statisticSettingsGui_OpeningFcn via varargin.
+function varargout = automateSettingsGui(varargin)
+% AUTOMATESETTINGSGUI MATLAB code for automateSettingsGui.fig
+%      settingsOut = AUTOMATESETTINGSGUI(handlesMain) creates a new AUTOMATESETTINGSGUI. 
+%      The input handles is passed to automateSettingsGui_OpeningFcn via varargin.
 %
 % See also: GUIDE, GUIDATA, GUIHANDLES
 
-% Edit the above text to modify the response to help statisticSettingsGui
+% Edit the above text to modify the response to help automateSettingsGui
 
-% Last Modified by GUIDE v2.5 05-Dec-2013 20:50:39
+% Last Modified by GUIDE v2.5 12-Apr-2014 18:22:06
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
 gui_State = struct('gui_Name',       mfilename, ...
                    'gui_Singleton',  gui_Singleton, ...
-                   'gui_OpeningFcn', @statisticSettingsGui_OpeningFcn, ...
-                   'gui_OutputFcn',  @statisticSettingsGui_OutputFcn, ...
+                   'gui_OpeningFcn', @automateSettingsGui_OpeningFcn, ...
+                   'gui_OutputFcn',  @automateSettingsGui_OutputFcn, ...
                    'gui_LayoutFcn',  [] , ...
                    'gui_Callback',   []);
 if nargin && ischar(varargin{1})
@@ -29,25 +29,25 @@ end
 % End initialization code - DO NOT EDIT
 
 
-% --- Executes just before statisticSettingsGui is made visible.
-function statisticSettingsGui_OpeningFcn(hObject, eventdata, handles, varargin)
+% --- Executes just before automateSettingsGui is made visible.
+function automateSettingsGui_OpeningFcn(hObject, eventdata, handles, varargin)
 % This function has no output args, see OutputFcn.
 % hObject    handle to figure
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-% varargin   command line arguments to statisticSettingsGui (see VARARGIN)
+% varargin   command line arguments to automateSettingsGui (see VARARGIN)
 handlesMain = varargin{1};
 handles.settings = handlesMain.settings;
-handles.statisticObj = handlesMain.statisticObj;
+handles.automateObj = handlesMain.automateObj;
 % store old settings, to be returned if user presses cancel button
 handles.settingsOld = handles.settings;
-handles.statisticObjOld = handles.statisticObj;
+handles.automateObjOld = handles.automateObj;
 
 handles.handlesMain = handlesMain;
 % fill all edit objects with the apropriate values
 handles = fillEdits(hObject, handles);
 
-% Choose default command line output for statisticSettingsGui
+% Choose default command line output for automateSettingsGui
 handles.output = hObject;
 
 % Update handles structure
@@ -65,7 +65,7 @@ function figure1_CloseRequestFcn(hObject, eventdata, handles)
 cancelProcedure(hObject, handles);
 
 % --- Outputs from this function are returned to the command line.
-function varargout = statisticSettingsGui_OutputFcn(hObject, eventdata, handles) 
+function varargout = automateSettingsGui_OutputFcn(hObject, eventdata, handles) 
 % varargout  cell array for returning output args (see VARARGOUT);
 % hObject    handle to figure
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -79,9 +79,9 @@ delete(handles.figure1);
 
 function handles = fillEdits(hObject, handles)
 % fill all edit objects with the apropriate values
-statisticObj = handles.statisticObj;
+automateObj = handles.automateObj;
 
-set(handles.statistic3Checkbox, 'Value', 0);
+set(handles.automate3Checkbox, 'Value', 0);
 
 set(handles.varStartEdit, 'enable', 'off');
 set(handles.varEndEdit, 'enable', 'off');
@@ -94,9 +94,9 @@ set(handles.varEndEdit, 'String', '-');
 set(handles.varNEdit, 'String', '-');
 set(handles.averageNEdit, 'String', '-');
 
-for index = 2:length(statisticObj{1}) + 1
-    statisticNr = statisticObj{index}.statisticNr;
-    switch statisticNr
+for index = 2:length(automateObj{1}) + 1
+    automateNr = automateObj{index}.automateNr;
+    switch automateNr
         case 1
             set(handles.varStartEdit, 'enable', 'on');
             set(handles.varEndEdit, 'enable', 'on');
@@ -104,15 +104,15 @@ for index = 2:length(statisticObj{1}) + 1
             set(handles.averageNEdit, 'enable', 'on');
             
             set(handles.variableToChangePopup, 'Value', 2);
-            set(handles.varStartEdit, 'String', sprintf('%g', statisticObj{index}.vDesList(1)));
-            set(handles.varEndEdit, 'String', sprintf('%g', statisticObj{index}.vDesList(end)));
-            set(handles.varNEdit, 'String', sprintf('%d', length(statisticObj{index}.vDesList)));
-            set(handles.averageNEdit, 'String', sprintf('%d', statisticObj{index}.averageN));
+            set(handles.varStartEdit, 'String', sprintf('%g', automateObj{index}.vDesList(1)));
+            set(handles.varEndEdit, 'String', sprintf('%g', automateObj{index}.vDesList(end)));
+            set(handles.varNEdit, 'String', sprintf('%d', length(automateObj{index}.vDesList)));
+            set(handles.averageNEdit, 'String', sprintf('%d', automateObj{index}.averageN));
             
-            handles.lastValidEditValues.varStart = statisticObj{index}.vDesList(1);
-            handles.lastValidEditValues.varEnd = statisticObj{index}.vDesList(end);
-            handles.lastValidEditValues.varN = length(statisticObj{index}.vDesList);
-            handles.lastValidEditValues.averageN = length(statisticObj{index}.averageN);
+            handles.lastValidEditValues.varStart = automateObj{index}.vDesList(1);
+            handles.lastValidEditValues.varEnd = automateObj{index}.vDesList(end);
+            handles.lastValidEditValues.varN = length(automateObj{index}.vDesList);
+            handles.lastValidEditValues.averageN = length(automateObj{index}.averageN);
         case 2
             set(handles.varStartEdit, 'enable', 'on');
             set(handles.varEndEdit, 'enable', 'on');
@@ -120,63 +120,63 @@ for index = 2:length(statisticObj{1}) + 1
             set(handles.averageNEdit, 'enable', 'on');
             
             set(handles.variableToChangePopup, 'Value', 3);
-            set(handles.varStartEdit, 'String', sprintf('%g', statisticObj{index}.wallAngleList(1)*180/pi));
-            set(handles.varEndEdit, 'String', sprintf('%g', statisticObj{index}.wallAngleList(end)*180/pi));
-            set(handles.varNEdit, 'String', sprintf('%.d', length(statisticObj{index}.wallAngleList)));
-            set(handles.averageNEdit, 'String', sprintf('%d', statisticObj{index}.averageN));
+            set(handles.varStartEdit, 'String', sprintf('%g', automateObj{index}.wallAngleList(1)*180/pi));
+            set(handles.varEndEdit, 'String', sprintf('%g', automateObj{index}.wallAngleList(end)*180/pi));
+            set(handles.varNEdit, 'String', sprintf('%.d', length(automateObj{index}.wallAngleList)));
+            set(handles.averageNEdit, 'String', sprintf('%d', automateObj{index}.averageN));
             
-            handles.lastValidEditValues.varStart = statisticObj{index}.wallAngleList(1)*180/pi;
-            handles.lastValidEditValues.varEnd = statisticObj{index}.wallAngleList(end)*180/pi;
-            handles.lastValidEditValues.varN = length(statisticObj{index}.wallAngleList);
-            handles.lastValidEditValues.averageN = length(statisticObj{index}.averageN);
+            handles.lastValidEditValues.varStart = automateObj{index}.wallAngleList(1)*180/pi;
+            handles.lastValidEditValues.varEnd = automateObj{index}.wallAngleList(end)*180/pi;
+            handles.lastValidEditValues.varN = length(automateObj{index}.wallAngleList);
+            handles.lastValidEditValues.averageN = length(automateObj{index}.averageN);
             
         case 3
-            set(handles.statistic3Checkbox, 'Value', 1);
+            set(handles.automate3Checkbox, 'Value', 1);
     end
 end
 
-function handles = generateStatisticObj(hObject, handles)
+function handles = generateAutomateObj(hObject, handles)
 popupNr = get(handles.variableToChangePopup, 'Value');
 switch popupNr
     case 1
-        statisticObj = cell(1);
-        statisticObj{1} = [];
+        automateObj = cell(1);
+        automateObj{1} = [];
     case 2
-        statisticObj = cell(1,2);
-        statisticObj{1} = 1;
-        statisticObj{2}.statisticNr = 1;
+        automateObj = cell(1,2);
+        automateObj{1} = 1;
+        automateObj{2}.automateNr = 1;
         varStart = str2double(get(handles.varStartEdit, 'String'));
         varEnd = str2double(get(handles.varEndEdit, 'String'));
         varN = str2double(get(handles.varNEdit, 'String'));
         averageN = str2double(get(handles.averageNEdit, 'String'));
-        statisticObj{2}.vDesList = linspace(varStart,varEnd,varN);
-        handles.settings.vDes = statisticObj{2}.vDesList(1);
-        statisticObj{2}.vDesIndex = 1;
-        statisticObj{2}.averageIndex = 1;
-        statisticObj{2}.averageN = averageN;
-        statisticObj{2}.timeNeeded = zeros(1,length(statisticObj{2}.vDesList));
+        automateObj{2}.vDesList = linspace(varStart,varEnd,varN);
+        handles.settings.vDes = automateObj{2}.vDesList(1);
+        automateObj{2}.vDesIndex = 1;
+        automateObj{2}.averageIndex = 1;
+        automateObj{2}.averageN = averageN;
+        automateObj{2}.timeNeeded = zeros(1,length(automateObj{2}.vDesList));
     case 3
-        statisticObj = cell(1,2);
-        statisticObj{1} = 2;
-        statisticObj{2}.statisticNr = 2;
+        automateObj = cell(1,2);
+        automateObj{1} = 2;
+        automateObj{2}.automateNr = 2;
         varStart = str2double(get(handles.varStartEdit, 'String'))*pi/180;
         varEnd = str2double(get(handles.varEndEdit, 'String'))*pi/180;
         varN = str2double(get(handles.varNEdit, 'String'));
         averageN = str2double(get(handles.averageNEdit, 'String'));
-        statisticObj{2}.wallAngleList = linspace(varStart,varEnd,varN);
-        handles.settings = setWallAngle(handles.settings,statisticObj{2}.wallAngleList(1));
-        statisticObj{2}.wallAngleIndex = 1;
-        statisticObj{2}.averageIndex = 1;
-        statisticObj{2}.averageN = averageN;
-        statisticObj{2}.timeNeeded = zeros(1,length(statisticObj{2}.wallAngleList));
+        automateObj{2}.wallAngleList = linspace(varStart,varEnd,varN);
+        handles.settings = setWallAngle(handles.settings,automateObj{2}.wallAngleList(1));
+        automateObj{2}.wallAngleIndex = 1;
+        automateObj{2}.averageIndex = 1;
+        automateObj{2}.averageN = averageN;
+        automateObj{2}.timeNeeded = zeros(1,length(automateObj{2}.wallAngleList));
 end
 
-if get(handles.statistic3Checkbox, 'Value') == 1
-        statisticObj{1} = [statisticObj{1}, 3];
-        statisticObj3 = setInitStatistic(3,handles.settings);
-        statisticObj = [statisticObj, statisticObj3{2}];
+if get(handles.automate3Checkbox, 'Value') == 1
+        automateObj{1} = [automateObj{1}, 3];
+        automateObj3 = setInitautomate(3,handles.settings);
+        automateObj = [automateObj, automateObj3{2}];
 end
-handles.statisticObj = statisticObj;
+handles.automateObj = automateObj;
 
 
 % --- Sets new settings as output and calls closing procedure
@@ -184,7 +184,7 @@ function okProcedure(hObject, handles)
 
 handlesMain = handles.handlesMain;
 handlesMain.settings = handles.settings;
-handlesMain.statisticObj = handles.statisticObj;
+handlesMain.automateObj = handles.automateObj;
 handles.output = handlesMain;
 
 
@@ -208,7 +208,7 @@ function cancelProcedure(hObject, handles)
 
 handlesMain = handles.handlesMain;
 handlesMain.settings = handles.settingsOld;
-handlesMain.statisticObj = handles.statisticObjOld;
+handlesMain.automateObj = handles.automateObjOld;
 handles.output = handles.handlesMain;
 
 % Update handles structure
@@ -265,7 +265,7 @@ switch menueValue
         handles.lastValidEditValues.averageN = 5;
             
 end
-handles = generateStatisticObj(hObject, handles);
+handles = generateAutomateObj(hObject, handles);
 % Update handles structure
 guidata(hObject, handles);
 
@@ -290,12 +290,12 @@ function openMenu_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 [fileName, pathName, filterIndex] = uigetfile('*.mat', ...
-    'Load automate settings...', './presets/statisticObj.mat');
+    'Load automate settings...', './presets/automateObj.mat');
 if filterIndex ~= 0
-    if sum(strcmp(who('-file', [pathName, fileName]), 'statisticObj')) == 1
-        load([pathName, fileName], 'statisticObj');
-        if checkStatisticObj(statisticObj)
-            handles.statisticObj = statisticObj;
+    if sum(strcmp(who('-file', [pathName, fileName]), 'automateObj')) == 1
+        load([pathName, fileName], 'automateObj');
+        if checkAutomateObj(automateObj)
+            handles.automateObj = automateObj;
             handles = fillEdits(hObject, handles);
             guidata(hObject, handles);
         else
@@ -311,10 +311,10 @@ function saveAsMenu_Callback(hObject, eventdata, handles)
 % hObject    handle to saveAsMenu (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-statisticObj = handles.statisticObj;
-[filename, pathname, FilterIndex] = uiputfile('*.mat', 'Save automate settings as...', './presets/statisticObj.mat');
+automateObj = handles.automateObj;
+[filename, pathname, FilterIndex] = uiputfile('*.mat', 'Save automate settings as...', './presets/automateObj.mat');
 if (FilterIndex ~= 0)
-    save([pathname, filename], 'statisticObj');
+    save([pathname, filename], 'automateObj');
 end
 
 
@@ -361,7 +361,7 @@ else
     num = handles.lastValidEditValues.varStart;
     set(hObject,'String', sprintf('%g', num));
 end
-handles = generateStatisticObj(hObject, handles);
+handles = generateAutomateObj(hObject, handles);
 guidata(hObject, handles);
 
 % --- Executes during object creation, after setting all properties.
@@ -398,7 +398,7 @@ else
     num = handles.lastValidEditValues.varEnd;
     set(hObject,'String', sprintf('%g', num));
 end
-handles = generateStatisticObj(hObject, handles);
+handles = generateAutomateObj(hObject, handles);
 guidata(hObject, handles);
 
 % --- Executes during object creation, after setting all properties.
@@ -429,7 +429,7 @@ else
     num = handles.lastValidEditValues.varN;
     set(hObject,'String', sprintf('%g', num));
 end
-handles = generateStatisticObj(hObject, handles);
+handles = generateAutomateObj(hObject, handles);
 guidata(hObject, handles);
 
 % --- Executes during object creation, after setting all properties.
@@ -460,7 +460,7 @@ else
     num = handles.lastValidEditValues.averageN;
     set(hObject,'String', sprintf('%g', num));
 end
-handles = generateStatisticObj(hObject, handles);
+handles = generateAutomateObj(hObject, handles);
 guidata(hObject, handles);
 
 % --- Executes during object creation, after setting all properties.
@@ -476,12 +476,12 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 
 
-% --- Executes on button press in statistic3Checkbox.
-function statistic3Checkbox_Callback(hObject, eventdata, handles)
-% hObject    handle to statistic3Checkbox (see GCBO)
+% --- Executes on button press in automate3Checkbox.
+function automate3Checkbox_Callback(hObject, eventdata, handles)
+% hObject    handle to automate3Checkbox (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hint: get(hObject,'Value') returns toggle state of statistic3Checkbox
-handles = generateStatisticObj(hObject, handles);
+% Hint: get(hObject,'Value') returns toggle state of automate3Checkbox
+handles = generateAutomateObj(hObject, handles);
 guidata(hObject, handles);

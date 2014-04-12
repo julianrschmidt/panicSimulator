@@ -21,8 +21,8 @@ if size(handles.simulationObj.agents, 1) ~= 0
 
     handles.simulationObj = simulationObj;
     set(handles.timeText, 'string', secondsToTimeString(simulationObj.tSimulation));
-    handles = statistic(handles);
-    dispStatisticStatus(handles);
+    handles = automate(handles);
+    dispAutomateStatus(handles);
     guidata(hObject, handles);    
 end
 

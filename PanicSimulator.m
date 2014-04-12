@@ -72,23 +72,23 @@ if exist('presets/defaultSettings.mat', 'file') == 2
 else
     settings = setInitCond();
 end
-% load or generate statistic object
-if exist('presets/defaultStatisticObj.mat', 'file') == 2
-    if sum(strcmp(who('-file', 'presets/defaultStatisticObj.mat'), 'statisticObj')) == 1
-        load('presets/defaultStatisticObj.mat', 'statisticObj');
-        if checkStatisticObj(statisticObj)
-            settings = modifySettingsDueToStatisticObj(statisticObj, settings);
+% load or generate automate object
+if exist('presets/defaultAutomateObj.mat', 'file') == 2
+    if sum(strcmp(who('-file', 'presets/defaultAutoamteObj.mat'), 'automateObj')) == 1
+        load('presets/defaultautomateObj.mat', 'automateObj');
+        if checkAutomateObj(automateObj)
+            settings = modifySettingsDueToAutomateObj(automateObj, settings);
         else
-            statisticObj = cell(1);
-            statisticObj{1} = [];
+            automateObj = cell(1);
+            automateObj{1} = [];
         end
     else
-        statisticObj = cell(1);
-        statisticObj{1} = [];
+        automateObj = cell(1);
+        automateObj{1} = [];
     end
 else
-    statisticObj = cell(1);
-    statisticObj{1} = [];
+    automateObj = cell(1);
+    automateObj{1} = [];
 end
 
 % true if drawn images are captured
@@ -121,9 +121,9 @@ handles.settings = settings;
 handles.simulationObj = simulationObj;
 handles.plotObj = plotObj;
 handles.timerObj = timerObj;
-handles.statisticObj = statisticObj;
+handles.automateObj = automateObj;
 
-dispStatisticStatus(handles);
+dispAutomateStatus(handles);
 
 set(handles.playButton, 'String', '');
 jButton = java(findjobj(handles.playButton));
@@ -209,8 +209,8 @@ handles = resetProcedure(handles);
 guidata(hObject, handles);
 
 function handles = resetProcedure(handles)
-[handles.statisticObj, handles.settings] = resetStatisticObj(handles.statisticObj, handles.settings, 0);
-dispStatisticStatus(handles);
+[handles.automateObj, handles.settings] = resetAutomateObj(handles.automateObj, handles.settings, 0);
+dispAutomateStatus(handles);
 set(handles.timeText, 'string', secondsToTimeString(0));
 
 %generate agents, walls in dependence on settings
@@ -363,26 +363,26 @@ quitProcedure(handles);
 
 
 % --------------------------------------------------------------------
-function statisticSettings_Callback(hObject, eventdata, handles)
-% hObject    handle to statisticSettings (see GCBO)
+function automateSettings_Callback(hObject, eventdata, handles)
+% hObject    handle to automateSettings (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% call statistic settings PanicSimulator
+% call automate settings PanicSimulator
 hGuiObj = [findobj(allchild(handles.figure1), 'Type','uicontrol');...
     findobj(allchild(handles.figure1), 'Type','uimenu')];
 enableStates = get(hGuiObj,'Enable');
 set(hGuiObj,'Enable', 'off');
 closeRequestFcnTemp = get(handles.figure1, 'CloseRequestFcn');
 set(handles.figure1, 'CloseRequestFcn', '');
-handles = statisticSettingsGui(handles);
-dispStatisticStatus(handles);
+handles = automateSettingsGui(handles);
+dispAutomateStatus(handles);
 for guiObjNr = 1:length(hGuiObj)
     set(hGuiObj(guiObjNr),'Enable', enableStates{guiObjNr});
 end
 set(handles.figure1, 'CloseRequestFcn', closeRequestFcnTemp);
 settings = handles.settings;
-settings = modifySettingsDueToStatisticObj(handles.statisticObj, settings);
+settings = modifySettingsDueToAutomateObj(handles.automateObj, settings);
 
 
 %redraw field
