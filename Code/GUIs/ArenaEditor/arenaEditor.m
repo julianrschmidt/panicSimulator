@@ -6,8 +6,7 @@ function varargout = arenaEditor(varargin)
 %       be a cell array, containing at least the following variables
 % 
 %      settings
-%      agents
-%      columns
+%      simulationObj
 %
 %      The input is passed to arenaEditor_OpeningFcn via varargin.
 %      handles will be returned in the output variable h as it was, apart 
@@ -21,7 +20,6 @@ function varargout = arenaEditor(varargin)
 %
 % See also: GUIDE, GUIDATA, GUIHANDLES
 
-% Edit the above text to modify the response to help arenaEditor
 
 % Last Modified by GUIDE v2.5 10-Apr-2014 21:26:48
 
@@ -63,12 +61,15 @@ plotObj = plotInit(simulationObj, settings, handles.figure1);
 % save hObject in Userdata in the axes
 % guidata(get(gca, 'UserData')) returns handles
 set(handles.axes1, 'UserData', hObject);
+
+% set buttonDown functions to objects
 hAgents = plotObj.hAgents;
 hColumns = plotObj.hColumns;
 hWallLines = plotObj.hWallLines;
 hExit = plotObj.hExit;
 set([hAgents(:); hColumns(:); hWallLines(:); hExit(:)],'ButtonDownFcn', @objectButtonDown);   
 
+% initialize some variables
 handles.currentAgentId = 0;
 handles.currentWallId = 0;
 handles.currentWallLineId = 0;
@@ -103,8 +104,8 @@ varargout{1} = handles.output;
 % The figure can be deleted now
 delete(handles.figure1);
 
+% --- fill all edit objects with the apropriate values
 function handles = fillEdits(hObject, handles)
-% fill all edit objects with the apropriate values
 set(handles.agentRadiusEdit, 'String', sprintf('%g', 0.3));
 set(handles.agentVelocityEdit, 'String', sprintf('%g', 1));
 set(handles.agentDirectionEdit, 'String', sprintf('%g', 0));
@@ -116,6 +117,17 @@ lastValidEditValues.agentDirection = 0;
 lastValidEditValues.wallRadius = 0.5;
 handles.lastValidEditValues = lastValidEditValues;
 
+% --- Executes when user attempts to close figure1.
+function figure1_CloseRequestFcn(hObject, eventdata, handles)
+% hObject    handle to figure1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+cancelProcedure(hObject, handles);
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% buttons
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % --- Executes on button press in okButton.
 function okButton_Callback(hObject, eventdata, handles)
@@ -127,18 +139,11 @@ function okButton_Callback(hObject, eventdata, handles)
 
 okProcedure(hObject, handles);
 
-% --- sets old handles parameters as output and calls closing procedure
+% --- sets new handles parameters as output and calls closing procedure
 function okProcedure(hObject, handles)
 % prepare output varible
 handlesMain = handles.handlesMain;
 handlesMain.simulationObj = handles.simulationObj;
-handles.output = handlesMain;
-guidata(hObject, handles);
-uiresume(handles.figure1);
-
-% --- sets old handles parameters as output and calls closing procedure
-function cancelProcedure(hObject, handles)
-handlesMain = handles.handlesMain;
 handles.output = handlesMain;
 guidata(hObject, handles);
 uiresume(handles.figure1);
@@ -150,6 +155,17 @@ function cancelButton_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 % stores unmodified handles variable in output
 cancelProcedure(hObject, handles);
+
+% --- sets old handles parameters as output and calls closing procedure
+function cancelProcedure(hObject, handles)
+handlesMain = handles.handlesMain;
+handles.output = handlesMain;
+guidata(hObject, handles);
+uiresume(handles.figure1);
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% menues
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 % --------------------------------------------------------------------
@@ -182,6 +198,126 @@ exitCoord = handles.simulationObj.exitCoord;
 if (FilterIndex ~= 0)
     save([pathname, filename], 'columns', 'wallLines', 'exitCoord');
 end
+
+% --------------------------------------------------------------------
+function openAgentsMenu_Callback(hObject, eventdata, handles)
+% hObject    handle to openAgentsMenu (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+[fileName, pathName, filterIndex] = uigetfile('*.mat', 'Load Agents...', './presets/agents.mat');
+if filterIndex ~= 0
+    if sum(strcmp(who('-file', [pathName, fileName]), 'agents')) == 1
+        load([pathName, fileName], 'agents');
+        if validateAgents(agents)
+            handles.simulationObj.agents = agents;
+            delete(handles.plotObj.hAgents);
+            hAgents = zeros(1, size(agents, 1));
+            for j = 1:length(hAgents) 
+                hAgents(j) = plotAgentCircle(agents(j,1), agents(j,2), agents(j,5));
+                set(hAgents(j), 'UserData', [1,j]);
+            end
+            if strcmp(handles.oldTool, 'modifyObjectTool')
+                set(hAgents(:),'ButtonDownFcn', @objectButtonDown);   
+            end
+            handles.plotObj.hAgents = hAgents;
+            guidata(hObject, handles);
+        else
+            errorOpenFileGui('filename',[pathName, fileName]);
+        end
+    else
+        errorOpenFileGui('filename',[pathName, fileName]);
+    end
+end
+
+
+% --------------------------------------------------------------------
+function openWallsMenu_Callback(hObject, eventdata, handles)
+% hObject    handle to openWallsMenu (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+[fileName, pathName, filterIndex] = uigetfile('*.mat', 'Load walls...', './presets/walls.mat');
+if filterIndex ~= 0
+    if sum(strcmp(who('-file', [pathName, fileName]), 'columns')) == 1 && ...
+            sum(strcmp(who('-file', [pathName, fileName]), 'wallLines')) == 1 && ...
+            sum(strcmp(who('-file', [pathName, fileName]), 'exitCoord')) == 1
+        load([pathName, fileName], 'columns', 'wallLines', 'exitCoord');
+        if validateColumns(columns) && validateWallLines(wallLines) &&validateExitCoord(exitCoord)
+            handles.simulationObj.columns = columns;
+            handles.simulationObj.wallLines = wallLines;
+            handles.simulationObj.exitCoord = exitCoord;
+            delete(handles.plotObj.hColumns);
+            delete(handles.plotObj.hWallLines);
+            delete(handles.plotObj.hExit);
+            hColumns = zeros(1, size(columns, 1));
+            for j = 1:length(hColumns) 
+                hColumns(j) = plotWallColumn(columns(j,1), columns(j,2), columns(j,3));
+                set(hColumns(j), 'UserData', [2,j]);
+            end
+            handles.plotObj.hColumns = hColumns;
+            NWallLines = size(wallLines, 1);
+            hWallLines = zeros(1, NWallLines);
+            for j = 1:NWallLines
+                hWallLines(j) = plotWallLine([wallLines(j,1), wallLines(j,3)], [wallLines(j,2), wallLines(j,4)]);
+                set(hWallLines(j), 'UserData', [3,j]);
+            end
+
+            handles.plotObj.hWallLines = hWallLines;
+
+            hExit = plotExitLine([exitCoord(1), exitCoord(3)], [exitCoord(2), exitCoord(4)]);
+            set(hExit(1), 'UserData', [4, hExit(2)]);
+            set(hExit(2), 'UserData', [4, hExit(1)]);
+            
+            if strcmp(handles.oldTool, 'modifyObjectTool')
+                set([hColumns(:); hWallLines(:); hExit(:)],'ButtonDownFcn', @objectButtonDown);   
+            end
+
+            guidata(hObject, handles);
+        else
+            errorOpenFileGui('filename',[pathName, fileName]);
+        end
+    else
+        errorOpenFileGui('filename',[pathName, fileName]);
+    end
+end
+
+
+% --------------------------------------------------------------------
+function editMenu_Callback(hObject, eventdata, handles)
+% hObject    handle to editMenu (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --------------------------------------------------------------------
+function clearAgentsMenu_Callback(hObject, eventdata, handles)
+% hObject    handle to clearAgentsMenu (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+agents = [];
+handles.simulationObj.agents = agents;
+delete(handles.plotObj.hAgents);
+handles.plotObj.hAgents = [];
+guidata(hObject, handles);
+
+
+% --------------------------------------------------------------------
+function clearWallsMenu_Callback(hObject, eventdata, handles)
+% hObject    handle to clearWallsMenu (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+columns = [];
+handles.simulationObj.columns = columns;
+delete(handles.plotObj.hColumns);
+handles.plotObj.hColumns = [];
+handles.simulationObj.wallLines = [];
+delete(handles.plotObj.hWallLines);
+handles.plotObj.hWallLines = [];
+guidata(hObject, handles);
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% edit fields
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 function agentRadiusEdit_Callback(hObject, eventdata, handles)
 % hObject    handle to agentRadiusEdit (see GCBO)
@@ -340,130 +476,24 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
     set(hObject,'BackgroundColor','white');
 end
 
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Tools
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 % --------------------------------------------------------------------
-function openAgentsMenu_Callback(hObject, eventdata, handles)
-% hObject    handle to openAgentsMenu (see GCBO)
+function toolChosen_ClickedCallback(hObject, eventdata, handles)
+% hObject    handle to modifyObjectTool (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-[fileName, pathName, filterIndex] = uigetfile('*.mat', 'Load Agents...', './presets/agents.mat');
-if filterIndex ~= 0
-    if sum(strcmp(who('-file', [pathName, fileName]), 'agents')) == 1
-        load([pathName, fileName], 'agents');
-        if validateAgents(agents)
-            handles.simulationObj.agents = agents;
-            delete(handles.plotObj.hAgents);
-            hAgents = zeros(1, size(agents, 1));
-            for j = 1:length(hAgents) 
-                hAgents(j) = plotAgentCircle(agents(j,1), agents(j,2), agents(j,5));
-                set(hAgents(j), 'UserData', [1,j]);
-            end
-            if strcmp(handles.oldTool, 'modifyObjectTool')
-                set(hAgents(:),'ButtonDownFcn', @objectButtonDown);   
-            end
-            handles.plotObj.hAgents = hAgents;
-            guidata(hObject, handles);
-        else
-            errorOpenFileGui('filename',[pathName, fileName]);
-        end
-    else
-        errorOpenFileGui('filename',[pathName, fileName]);
-    end
+if (strcmp(get(hObject,'State'), 'on'))
+    allOtherToolsOff(hObject, handles);
+    changeTool(hObject, handles, get(hObject,'Tag'));
+else
+    set(hObject, 'State', 'on');
 end
-
-
-% --------------------------------------------------------------------
-function openWallsMenu_Callback(hObject, eventdata, handles)
-% hObject    handle to openWallsMenu (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-[fileName, pathName, filterIndex] = uigetfile('*.mat', 'Load walls...', './presets/walls.mat');
-if filterIndex ~= 0
-    if sum(strcmp(who('-file', [pathName, fileName]), 'columns')) == 1 && ...
-            sum(strcmp(who('-file', [pathName, fileName]), 'wallLines')) == 1 && ...
-            sum(strcmp(who('-file', [pathName, fileName]), 'exitCoord')) == 1
-        load([pathName, fileName], 'columns', 'wallLines', 'exitCoord');
-        if validateColumns(columns) && validateWallLines(wallLines) &&validateExitCoord(exitCoord)
-            handles.simulationObj.columns = columns;
-            handles.simulationObj.wallLines = wallLines;
-            handles.simulationObj.exitCoord = exitCoord;
-            delete(handles.plotObj.hColumns);
-            delete(handles.plotObj.hWallLines);
-            delete(handles.plotObj.hExit);
-            hColumns = zeros(1, size(columns, 1));
-            for j = 1:length(hColumns) 
-                hColumns(j) = plotWallColumn(columns(j,1), columns(j,2), columns(j,3));
-                set(hColumns(j), 'UserData', [2,j]);
-            end
-            handles.plotObj.hColumns = hColumns;
-            NWallLines = size(wallLines, 1);
-            hWallLines = zeros(1, NWallLines);
-            for j = 1:NWallLines
-                hWallLines(j) = plotWallLine([wallLines(j,1), wallLines(j,3)], [wallLines(j,2), wallLines(j,4)]);
-                set(hWallLines(j), 'UserData', [3,j]);
-            end
-
-            handles.plotObj.hWallLines = hWallLines;
-
-            hExit = plotExitLine([exitCoord(1), exitCoord(3)], [exitCoord(2), exitCoord(4)]);
-            set(hExit(1), 'UserData', [4, hExit(2)]);
-            set(hExit(2), 'UserData', [4, hExit(1)]);
-            
-            if strcmp(handles.oldTool, 'modifyObjectTool')
-                set([hColumns(:); hWallLines(:); hExit(:)],'ButtonDownFcn', @objectButtonDown);   
-            end
-
-            guidata(hObject, handles);
-        else
-            errorOpenFileGui('filename',[pathName, fileName]);
-        end
-    else
-        errorOpenFileGui('filename',[pathName, fileName]);
-    end
-end
-
-
-% --------------------------------------------------------------------
-function editMenu_Callback(hObject, eventdata, handles)
-% hObject    handle to editMenu (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-
-% --------------------------------------------------------------------
-function clearAgentsMenu_Callback(hObject, eventdata, handles)
-% hObject    handle to clearAgentsMenu (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-agents = [];
-handles.simulationObj.agents = agents;
-delete(handles.plotObj.hAgents);
-handles.plotObj.hAgents = [];
-guidata(hObject, handles);
-
-
-% --------------------------------------------------------------------
-function clearWallsMenu_Callback(hObject, eventdata, handles)
-% hObject    handle to clearWallsMenu (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-columns = [];
-handles.simulationObj.columns = columns;
-delete(handles.plotObj.hColumns);
-handles.plotObj.hColumns = [];
-handles.simulationObj.wallLines = [];
-delete(handles.plotObj.hWallLines);
-handles.plotObj.hWallLines = [];
-guidata(hObject, handles);
-
-
-% --- Executes when user attempts to close figure1.
-function figure1_CloseRequestFcn(hObject, eventdata, handles)
-% hObject    handle to figure1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-cancelProcedure(hObject, handles);
-
 
 % --- Executes on key press with focus on figure1 and none of its controls.
 function figure1_KeyPressFcn(hObject, eventdata, handles)
@@ -651,21 +681,11 @@ guidata(hObject, handles);
 function allOtherToolsOff(hObject,handles)
 set(handles.hAllTools, 'State', 'off');
 set(hObject, 'State', 'on');
-
-% --------------------------------------------------------------------
-function toolChosen_ClickedCallback(hObject, eventdata, handles)
-% hObject    handle to modifyObjectTool (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-if (strcmp(get(hObject,'State'), 'on'))
-    allOtherToolsOff(hObject, handles);
-    changeTool(hObject, handles, get(hObject,'Tag'));
-else
-    set(hObject, 'State', 'on');
-end
     
 
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% other ui
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 function infoText_Callback(hObject, eventdata, handles)
 % hObject    handle to infoText (see GCBO)

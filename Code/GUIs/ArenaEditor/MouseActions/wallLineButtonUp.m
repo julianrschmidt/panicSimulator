@@ -1,5 +1,5 @@
 function wallLineButtonUp( src, evnt )
-%WALLLINEBUTTONUP saves new agent coordinates of moved agent
+%WALLLINEBUTTONUP saves new wall line coordinates of moved wall line
 thisfig = gcf();
 % delete functions earlier called when mouse was moved or button released
 set(thisfig,'WindowButtonUpFcn','');

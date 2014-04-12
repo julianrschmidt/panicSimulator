@@ -1,5 +1,5 @@
 function circleOfColumnsButtonUp( src, evnt )
-%CIRCLEOFCOLUMNSBUTTONUP delete line drawn by lineOfColumnsButtonDown, draw line of
+%CIRCLEOFCOLUMNSBUTTONUP delete line drawn by lineOfColumnsButtonDown, draw circle of
 %columns and store new wall objects in the columns matrix
 thisfig = gcf();
 set(thisfig,'WindowButtonUpFcn','');

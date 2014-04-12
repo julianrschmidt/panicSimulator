@@ -1,6 +1,6 @@
 function objectButtonDown( src, evnt )
-%OBJECTBUTTONDOWN displays agent information on left click
-%   enables moving agent when mouse is moved, deletes agent on right click
+%OBJECTBUTTONDOWN executes common button down tasks and calls appropriate
+%  buttonDown functions
 
 thisfig = gcbf();
 handles = guidata(thisfig);

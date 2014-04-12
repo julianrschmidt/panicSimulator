@@ -1,6 +1,6 @@
 function wallLineButtonMoving( src, evnt )
-%WALLLINEBUTTONMOVING moves current clicked agent's circle following mouse 
-% movements
+%WALLLINEBUTTONMOVING moves current clicked wall line following mouse 
+%   movements
 thisfig = gcf();
 handles = guidata(thisfig);
 % difference between current point and start point

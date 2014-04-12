@@ -1,6 +1,7 @@
 function wallLineButtonDown( src, evnt )
-%WALLLINEBUTTONDOWN displays agent information on left click
-%   enables moving agent when mouse is moved, deletes agent on right click
+%WALLLINEBUTTONDOWN displays wall line information on left click
+%   enables moving wall line when mouse is moved, 
+%   deletes agent on right click
 
 thisfig = gcbf();
 handles = guidata(thisfig);

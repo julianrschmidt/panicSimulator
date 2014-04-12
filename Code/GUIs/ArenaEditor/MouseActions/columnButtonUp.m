@@ -1,5 +1,5 @@
 function columnButtonUp( src, evnt )
-%COLUMNBUTTONUP saves new wall coordinates of moved wall
+%COLUMNBUTTONUP saves new wall coordinates of moved column
 thisfig = gcf();
 % delete functions earlier called when mouse was moved or button released
 set(thisfig,'WindowButtonUpFcn','');

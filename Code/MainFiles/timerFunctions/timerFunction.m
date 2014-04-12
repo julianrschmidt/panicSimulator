@@ -21,7 +21,10 @@ if size(handles.simulationObj.agents, 1) ~= 0
 
     handles.simulationObj = simulationObj;
     set(handles.timeText, 'string', secondsToTimeString(simulationObj.tSimulation));
-    handles = automate(handles);
+    [handles, resetBool] = automate(handles);
+    if resetBool
+        handles = resetProcedureWithoutAutomate(handles);
+    end
     dispAutomateStatus(handles);
     guidata(hObject, handles);    
 end

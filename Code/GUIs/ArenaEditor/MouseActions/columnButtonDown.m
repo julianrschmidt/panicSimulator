@@ -1,5 +1,5 @@
 function columnButtonDown( src, evnt )
-%COLUMNBUTTONDOWN displays wall information on left click
+%COLUMNBUTTONDOWN displays column information on left click
 %   enables moving wall when mouse is moved, deletes wall on right click
 thisfig = gcbf();
 handles = guidata(thisfig);

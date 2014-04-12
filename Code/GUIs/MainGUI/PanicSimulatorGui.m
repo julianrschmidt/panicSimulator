@@ -199,36 +199,6 @@ handles = resetProcedure(handles);
 % Update handles structure
 guidata(hObject, handles);
 
-% --- executes all necessary tasks when a reset of the arena is done
-function handles = resetProcedure(handles)
-% handles    structure with handles and user data (see GUIDATA)
-
-% reset automateObj
-[handles.automateObj, handles.settings] = ...
-    resetAutomateObj(handles.automateObj, handles.settings, 0);
-dispAutomateStatus(handles);
-
-%reset timer
-set(handles.timeText, 'string', secondsToTimeString(0));
-
-%generate agents, columns in dependence on settings
-simulationObj = createSimulationObj(handles.settings, cell(0));
-
-% reset the simulationObj
-simulationObj = resetSimulationObj(simulationObj);
-
-% delete old plot
-plotObj = handles.plotObj;
-delete(plotObj.hCells);
-delete(plotObj.hAgents(:));
-delete(plotObj.hColumns(:));
-delete(plotObj.hWallLines(:));
-% plot everything
-plotObj = plotInit(simulationObj, handles.settings, handles.figure1);
-% store everything
-handles.simulationObj = simulationObj;
-handles.plotObj = plotObj;
-
 
 % --- Executes on button press in captureButton.
 function captureButton_Callback(hObject, eventdata, handles)

@@ -1,5 +1,5 @@
 function circleOfColumnsButtonDown( src, evnt )
-%CIRCLEOFColumnsBUTTONDOWN prepares the creation of a line of wall
+%CIRCLEOFCOLUMNSBUTTONDOWN prepares the creation of a line of wall
 thisfig = gcf();
 handles = guidata(thisfig);
 clickStyle = get(gcbf, 'SelectionType'); % 'normal' for left and 
