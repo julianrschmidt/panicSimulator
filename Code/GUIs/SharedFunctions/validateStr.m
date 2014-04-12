@@ -1,5 +1,5 @@
-function [ num, sucess ] = testStr( str, style, range )
-%TESTSTR Summary of this function goes here
+function [ num, sucess ] = validateStr( str, style, range )
+%VALIDATESTR Summary of this function goes here
 %   Detailed explanation goes here
 num = str2double(str);
 if isnan(num)

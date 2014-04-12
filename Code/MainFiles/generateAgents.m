@@ -18,7 +18,7 @@ vVar = settings.vVarAgentsIni;
 
 
 %radius of agents
-rVec = agentRadii(NAgent);
+rVec = createAgentRadii(NAgent);
 rMax = max(rVec);
 
 %velocity of agents

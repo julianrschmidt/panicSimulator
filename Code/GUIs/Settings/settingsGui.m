@@ -169,7 +169,7 @@ function nAgentEdit_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of nAgentEdit as text
 %        str2double(get(hObject,'String')) returns contents of nAgentEdit as a double
-[num, sucess] = testStr(get(hObject,'String'), 'int', [0,inf]);
+[num, sucess] = validateStr(get(hObject,'String'), 'int', [0,inf]);
 if sucess
     handles.resetBool = true;
     handles.settings = setNAgent(handles.settings, num);
@@ -208,7 +208,7 @@ function doorWidthEdit_Callback(hObject, eventdata, handles)
 % Hints: get(hObject,'String') returns contents of doorWidthEdit as text
 %        str2double(get(hObject,'String')) returns contents of doorWidthEdit as a double
 handles.resetBool = true;
-[num, sucess] = testStr(get(hObject,'String'), 'double', [0.01,inf]);
+[num, sucess] = validateStr(get(hObject,'String'), 'double', [0.01,inf]);
 if sucess
     handles.settings.doorWidth = num;
     % Update handles structure
@@ -248,7 +248,7 @@ function vDesEdit_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of vDesEdit as text
 %        str2double(get(hObject,'String')) returns contents of vDesEdit as a double
-[num, sucess] = testStr(get(hObject,'String'), 'double', [-inf,inf]);
+[num, sucess] = validateStr(get(hObject,'String'), 'double', [-inf,inf]);
 if sucess
     handles.settings.vDes = num;
     % Update handles structure
@@ -277,7 +277,7 @@ function densityEdit_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of densityEdit as text
 %        str2double(get(hObject,'String')) returns contents of densityEdit as a double
-[num, sucess] = testStr(get(hObject,'String'), 'double', [0.01,inf]);
+[num, sucess] = validateStr(get(hObject,'String'), 'double', [0.01,inf]);
 if sucess
     handles.settings.density = num;
     % Update handles structure
@@ -305,7 +305,7 @@ function AEdit_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of AEdit as text
 %        str2double(get(hObject,'String')) returns contents of AEdit as a double
-[num, sucess] = testStr(get(hObject,'String'), 'double', [-inf,inf]);
+[num, sucess] = validateStr(get(hObject,'String'), 'double', [-inf,inf]);
 if sucess
     handles.settings.A = num;
     % Update handles structure
@@ -335,7 +335,7 @@ function BEdit_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of BEdit as text
 %        str2double(get(hObject,'String')) returns contents of BEdit as a double
-[num, sucess] = testStr(get(hObject,'String'), 'double', [-inf,inf]);
+[num, sucess] = validateStr(get(hObject,'String'), 'double', [-inf,inf]);
 if sucess
     handles.settings.B = num;
     % Update handles structure
@@ -365,7 +365,7 @@ function kEdit_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of kEdit as text
 %        str2double(get(hObject,'String')) returns contents of kEdit as a double
-[num, sucess] = testStr(get(hObject,'String'), 'double', [-inf,inf]);
+[num, sucess] = validateStr(get(hObject,'String'), 'double', [-inf,inf]);
 if sucess
     handles.settings.k = num;
     % Update handles structure
@@ -395,7 +395,7 @@ function kappaEdit_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of kappaEdit as text
 %        str2double(get(hObject,'String')) returns contents of kappaEdit as a double
-[num, sucess] = testStr(get(hObject,'String'), 'double', [-inf,inf]);
+[num, sucess] = validateStr(get(hObject,'String'), 'double', [-inf,inf]);
 if sucess
     handles.settings.kappa = num;
     % Update handles structure
@@ -425,7 +425,7 @@ function tauEdit_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of tauEdit as text
 %        str2double(get(hObject,'String')) returns contents of tauEdit as a double
-[num, sucess] = testStr(get(hObject,'String'), 'double', [0.001,inf]);
+[num, sucess] = validateStr(get(hObject,'String'), 'double', [0.001,inf]);
 if sucess
     handles.settings.tau = num;
     % Update handles structure
@@ -453,7 +453,7 @@ function dtPlotEdit_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of dtPlotEdit as text
 %        str2double(get(hObject,'String')) returns contents of dtPlotEdit as a double
-[num, sucess] = testStr(get(hObject,'String'), 'double', [eps,inf]);
+[num, sucess] = validateStr(get(hObject,'String'), 'double', [eps,inf]);
 if sucess
     handles.settings.dtPlot = num;
     % Update handles structure
@@ -478,7 +478,7 @@ function wallAngleEdit_Callback(hObject, eventdata, handles)
 % hObject    handle to wallAngleEdit (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-[num, sucess] = testStr(get(hObject,'String'), 'double', [0,90]);
+[num, sucess] = validateStr(get(hObject,'String'), 'double', [0,90]);
 if sucess
     handles.resetBool = true;
     handles.settings = setWallAngle(handles.settings, num*pi/180);
@@ -508,7 +508,7 @@ function xMaxEdit_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of xMaxEdit as text
 %        str2double(get(hObject,'String')) returns contents of xMaxEdit as a double
-[num, sucess] = testStr(get(hObject,'String'), 'double', [2*handles.settings.border,inf]);
+[num, sucess] = validateStr(get(hObject,'String'), 'double', [2*handles.settings.border,inf]);
 if sucess
     handles.resetBool = true;
     handles.settings = setXMax(handles.settings, num);
@@ -539,7 +539,7 @@ function yMaxEdit_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of yMaxEdit as text
 %        str2double(get(hObject,'String')) returns contents of yMaxEdit as a double
-[num, sucess] = testStr(get(hObject,'String'), 'double', [handles.settings.border+0.4,inf]);
+[num, sucess] = validateStr(get(hObject,'String'), 'double', [handles.settings.border+0.4,inf]);
 if sucess
     handles.resetBool = true;
     handles.settings = setYMax(handles.settings, num);
@@ -693,7 +693,7 @@ function openMenu_Callback(hObject, eventdata, handles)
 if filterIndex ~= 0
     if sum(strcmp(who('-file', [pathName, fileName]), 'settings')) == 1
         load([pathName, fileName], 'settings');
-        if checkSettings(settings)
+        if validateSettings(settings)
             handles.settings = settings;
             fillEdits(hObject, handles);
             guidata(hObject, handles);

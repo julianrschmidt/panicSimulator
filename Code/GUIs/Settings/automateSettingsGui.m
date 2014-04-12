@@ -173,7 +173,7 @@ end
 
 if get(handles.automate3Checkbox, 'Value') == 1
         automateObj{1} = [automateObj{1}, 3];
-        automateObj3 = setInitautomate(3,handles.settings);
+        automateObj3 = setInitAutomate(3,handles.settings);
         automateObj = [automateObj, automateObj3{2}];
 end
 handles.automateObj = automateObj;
@@ -294,7 +294,7 @@ function openMenu_Callback(hObject, eventdata, handles)
 if filterIndex ~= 0
     if sum(strcmp(who('-file', [pathName, fileName]), 'automateObj')) == 1
         load([pathName, fileName], 'automateObj');
-        if checkAutomateObj(automateObj)
+        if validateAutomateObj(automateObj)
             handles.automateObj = automateObj;
             handles = fillEdits(hObject, handles);
             guidata(hObject, handles);
@@ -351,9 +351,9 @@ function varStartEdit_Callback(hObject, eventdata, handles)
 popupNr = get(handles.variableToChangePopup, 'Value');
 switch popupNr
     case 2
-        [num, sucess] = testStr(get(hObject,'String'), 'double', [-inf,inf]);
+        [num, sucess] = validateStr(get(hObject,'String'), 'double', [-inf,inf]);
     case 3
-        [num, sucess] = testStr(get(hObject,'String'), 'double', [0,90]);
+        [num, sucess] = validateStr(get(hObject,'String'), 'double', [0,90]);
 end
 if sucess
     handles.lastValidEditValues.varStart = num;
@@ -388,9 +388,9 @@ function varEndEdit_Callback(hObject, eventdata, handles)
 popupNr = get(handles.variableToChangePopup, 'Value');
 switch popupNr
     case 2
-        [num, sucess] = testStr(get(hObject,'String'), 'double', [-inf,inf]);
+        [num, sucess] = validateStr(get(hObject,'String'), 'double', [-inf,inf]);
     case 3
-        [num, sucess] = testStr(get(hObject,'String'), 'double', [0,90]);
+        [num, sucess] = validateStr(get(hObject,'String'), 'double', [0,90]);
 end
 if sucess
     handles.lastValidEditValues.varEnd = num;
@@ -422,7 +422,7 @@ function varNEdit_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of varNEdit as text
 %        str2double(get(hObject,'String')) returns contents of varNEdit as a double
-[num, sucess] = testStr(get(hObject,'String'), 'int', [1,inf]);
+[num, sucess] = validateStr(get(hObject,'String'), 'int', [1,inf]);
 if sucess
     handles.lastValidEditValues.varN = num;
 else
@@ -453,7 +453,7 @@ function averageNEdit_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of averageNEdit as text
 %        str2double(get(hObject,'String')) returns contents of averageNEdit as a double
-[num, sucess] = testStr(get(hObject,'String'), 'int', [1,inf]);
+[num, sucess] = validateStr(get(hObject,'String'), 'int', [1,inf]);
 if sucess
     handles.lastValidEditValues.averageN = num;
 else

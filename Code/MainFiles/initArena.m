@@ -19,7 +19,7 @@ elseif strcmp(settings.agentPositionStyle,'filename')
     if exist(settings.agentPositionFilename, 'file') == 2
         if sum(strcmp(who('-file', settings.agentPositionFilename), 'agents')) == 1
             load(settings.agentPositionFilename, 'agents');
-            if checkAgents(agents)
+            if validateAgents(agents)
             else
                 agents = [];
                 errorOpenFileGui('filename',settings.agentPositionFilename);
@@ -60,7 +60,7 @@ elseif strcmp(settings.wallPositionStyle, 'filename')
                 sum(strcmp(who('-file', settings.wallPositionFilename), 'wallLines')) == 1 &&...
                 sum(strcmp(who('-file', settings.wallPositionFilename), 'exitCoord')) == 1
             load(settings.wallPositionFilename, 'walls', 'wallLines', 'exitCoord');
-            if checkWalls(walls) && checkWallLines(wallLines) &&checkExitCoord(exitCoord)
+            if validateWalls(walls) && validateWallLines(wallLines) &&validateExitCoord(exitCoord)
             else
                 errorOpenFileGui('filename',settings.wallPositionFilename);
             end

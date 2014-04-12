@@ -62,7 +62,7 @@ warningsOff();
 if exist('presets/defaultSettings.mat', 'file') == 2
     if sum(strcmp(who('-file', 'presets/defaultSettings.mat'), 'settings')) == 1
         load('presets/defaultSettings.mat', 'settings');
-        if checkSettings(settings)
+        if validateSettings(settings)
         else
             settings = setInitCond();   
         end
@@ -73,13 +73,13 @@ else
     settings = setInitCond();
 end
 % load or generate automate object
-if exist('presets/defaultAutomateObj.mat', 'file') == 2
-    if sum(strcmp(who('-file', 'presets/defaultAutoamteObj.mat'), 'automateObj')) == 1
-        load('presets/defaultautomateObj.mat', 'automateObj');
-        if checkAutomateObj(automateObj)
+if exist('presets/defaultAutomateSettings.mat', 'file') == 2
+    if sum(strcmp(who('-file', 'presets/defaultAutomateSettings.mat'), 'automateObj')) == 1
+        load('presets/defaultAutomateSettings.mat', 'automateObj');
+        if validateAutomateObj(automateObj)
             settings = modifySettingsDueToAutomateObj(automateObj, settings);
         else
-            automateObj = cell(1);
+            automateObj = cell(1);A
             automateObj{1} = [];
         end
     else

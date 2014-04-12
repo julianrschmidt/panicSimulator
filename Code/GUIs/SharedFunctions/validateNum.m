@@ -1,5 +1,5 @@
-function [ sucess ] = testNum( num, style, valueRange,  rowRange, columnRange)
-%TESTNUM Summary of this function goes here
+function [ sucess ] = validateNum( num, style, valueRange,  rowRange, columnRange)
+%VALIDATENUM Summary of this function goes here
 %   Detailed explanation goes here
 if any(size(num) < [rowRange(1), columnRange(1)])...
         || any(size(num) > [rowRange(2), columnRange(2)])

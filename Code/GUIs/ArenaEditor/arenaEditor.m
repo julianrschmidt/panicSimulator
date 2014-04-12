@@ -189,7 +189,7 @@ function agentRadiusEdit_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 %sets the typed in number as the current radius of the clicked agent if any
-[num, sucess] = testStr(get(hObject,'String'), 'double', [eps,inf]);
+[num, sucess] = validateStr(get(hObject,'String'), 'double', [eps,inf]);
 if sucess
     handles.lastValidEditValues.agentRadius = num;
     guidata(hObject, handles);
@@ -231,7 +231,7 @@ function agentVelocityEdit_Callback(hObject, eventdata, handles)
 
 % sets the typed in number as the current velocity of the clicked agent if 
 % any
-[num, sucess] = testStr(get(hObject,'String'), 'double', [0,inf]);
+[num, sucess] = validateStr(get(hObject,'String'), 'double', [0,inf]);
 if sucess
     handles.lastValidEditValues.agentVelocity = num;
     guidata(hObject, handles);
@@ -269,7 +269,7 @@ function agentDirectionEdit_Callback(hObject, eventdata, handles)
 % sets the typed in number as the current angle of direction 
 % of the clicked agent if any
 
-[num, sucess] = testStr(get(hObject,'String'), 'double', [0,360]);
+[num, sucess] = validateStr(get(hObject,'String'), 'double', [0,360]);
 if sucess
     handles.lastValidEditValues.agentDirection = num;
     guidata(hObject, handles);
@@ -306,7 +306,7 @@ function wallRadiusEdit_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 %sets the typed in number as the current radius of the clicked wall if any
-[num, sucess] = testStr(get(hObject,'String'), 'double', [0,inf]);
+[num, sucess] = validateStr(get(hObject,'String'), 'double', [0,inf]);
 if sucess
     handles.lastValidEditValues.wallRadius = num;
     guidata(hObject, handles);
@@ -349,7 +349,7 @@ function openAgentsMenu_Callback(hObject, eventdata, handles)
 if filterIndex ~= 0
     if sum(strcmp(who('-file', [pathName, fileName]), 'agents')) == 1
         load([pathName, fileName], 'agents');
-        if checkAgents(agents)
+        if validateAgents(agents)
             handles.simulationObj.agents = agents;
             delete(handles.plotObj.hAgents);
             hAgents = zeros(1, size(agents, 1));
@@ -382,7 +382,7 @@ if filterIndex ~= 0
             sum(strcmp(who('-file', [pathName, fileName]), 'wallLines')) == 1 && ...
             sum(strcmp(who('-file', [pathName, fileName]), 'exitCoord')) == 1
         load([pathName, fileName], 'walls', 'wallLines', 'exitCoord');
-        if checkWalls(walls) && checkWallLines(wallLines) &&checkExitCoord(exitCoord)
+        if validateWalls(walls) && validateWallLines(wallLines) &&validateExitCoord(exitCoord)
             handles.simulationObj.walls = walls;
             handles.simulationObj.wallLines = wallLines;
             handles.simulationObj.exitCoord = exitCoord;
