@@ -648,7 +648,7 @@ if menueValue == 1
     set(handles.doorWidthEdit, 'Enable', 'On');
     set(handles.wallAngleEdit, 'Enable', 'On');
 elseif menueValue == 2
-    [fileName, pathName, filterIndex] = uigetfile('*.mat', 'Define Wall file...', './presets/columns.mat');
+    [fileName, pathName, filterIndex] = uigetfile('*.mat', 'Define Wall file...', './presets/walls.mat');
     if filterIndex ~= 0
         handles.settings.wallPositionStyle = 'filename';
         handles.settings.wallPositionFilename = [pathName, fileName];
