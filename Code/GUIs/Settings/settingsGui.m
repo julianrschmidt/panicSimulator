@@ -689,7 +689,7 @@ function openMenu_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 [fileName, pathName, filterIndex] = uigetfile('*.mat', ...
-    'Open settings file...', './presets/settings.mat');
+    'Load settings...', './presets/settings.mat');
 if filterIndex ~= 0
     if sum(strcmp(who('-file', [pathName, fileName]), 'settings')) == 1
         load([pathName, fileName], 'settings');

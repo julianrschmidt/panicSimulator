@@ -178,7 +178,7 @@ function saveWallsAsMenu_Callback(hObject, eventdata, handles)
 walls = handles.simulationObj.walls;
 wallLines = handles.simulationObj.wallLines;
 exitCoord = handles.simulationObj.exitCoord;
-[filename, pathname, FilterIndex] = uiputfile('*.mat', 'Save walls and exit as...', './presets/walls.mat');
+[filename, pathname, FilterIndex] = uiputfile('*.mat', 'Save walls as...', './presets/walls.mat');
 if (FilterIndex ~= 0)
     save([pathname, filename], 'walls', 'wallLines', 'exitCoord');
 end
@@ -345,7 +345,7 @@ function openAgentsMenu_Callback(hObject, eventdata, handles)
 % hObject    handle to openAgentsMenu (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-[fileName, pathName, filterIndex] = uigetfile('*.mat', 'Open Agents...', './presets/agents.mat');
+[fileName, pathName, filterIndex] = uigetfile('*.mat', 'Load Agents...', './presets/agents.mat');
 if filterIndex ~= 0
     if sum(strcmp(who('-file', [pathName, fileName]), 'agents')) == 1
         load([pathName, fileName], 'agents');
@@ -376,7 +376,7 @@ function openWallsMenu_Callback(hObject, eventdata, handles)
 % hObject    handle to openWallsMenu (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-[fileName, pathName, filterIndex] = uigetfile('*.mat', 'Open Walls and exit...', './presets/walls.mat');
+[fileName, pathName, filterIndex] = uigetfile('*.mat', 'Load Walls...', './presets/walls.mat');
 if filterIndex ~= 0
     if sum(strcmp(who('-file', [pathName, fileName]), 'walls')) == 1 && ...
             sum(strcmp(who('-file', [pathName, fileName]), 'wallLines')) == 1 && ...

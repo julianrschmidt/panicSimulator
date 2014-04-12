@@ -290,7 +290,7 @@ function openMenu_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 [fileName, pathName, filterIndex] = uigetfile('*.mat', ...
-    'Open statistic file...', './presets/statisticObj.mat');
+    'Load automate settings...', './presets/statisticObj.mat');
 if filterIndex ~= 0
     if sum(strcmp(who('-file', [pathName, fileName]), 'statisticObj')) == 1
         load([pathName, fileName], 'statisticObj');
@@ -312,7 +312,7 @@ function saveAsMenu_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 statisticObj = handles.statisticObj;
-[filename, pathname, FilterIndex] = uiputfile('*.mat', 'Save statistic Object as...', './presets/statisticObj.mat');
+[filename, pathname, FilterIndex] = uiputfile('*.mat', 'Save automate settings as...', './presets/statisticObj.mat');
 if (FilterIndex ~= 0)
     save([pathname, filename], 'statisticObj');
 end
