@@ -8,7 +8,7 @@ function varargout = settingsGui(varargin)
 
 % Edit the above text to modify the response to help settingsGui
 
-% Last Modified by GUIDE v2.5 11-Apr-2014 16:54:57
+% Last Modified by GUIDE v2.5 13-Apr-2014 11:32:36
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
