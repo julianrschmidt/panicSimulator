@@ -6,8 +6,6 @@ function varargout = settingsGui(varargin)
 %
 % See also: GUIDE, GUIDATA, GUIHANDLES
 
-% Edit the above text to modify the response to help settingsGui
-
 % Last Modified by GUIDE v2.5 11-Apr-2014 16:54:57
 
 % Begin initialization code - DO NOT EDIT
@@ -77,44 +75,10 @@ varargout{2} = handles.resetBool;
 % The figure can be deleted now
 delete(handles.figure1);
 
-function fillEdits(hObject, handles)
-% fill all edit objects with the apropriate values
-set(handles.nAgentEdit, 'String', sprintf('%d', handles.settings.NAgent));
-set(handles.doorWidthEdit, 'String', sprintf('%g', handles.settings.doorWidth));
-set(handles.vDesEdit, 'String', sprintf('%g', handles.settings.vDes));
-set(handles.densityEdit, 'String', sprintf('%g', handles.settings.density));
-set(handles.AEdit, 'String', sprintf('%g', handles.settings.A));
-set(handles.BEdit, 'String', sprintf('%g', handles.settings.B));
-set(handles.kEdit, 'String', sprintf('%g', handles.settings.k));
-set(handles.kappaEdit, 'String', sprintf('%g', handles.settings.kappa));
-set(handles.tauEdit, 'String', sprintf('%g', handles.settings.tau));
-set(handles.dtPlotEdit, 'String', sprintf('%g', handles.settings.dtPlot));
-set(handles.wallAngleEdit, 'String', sprintf('%g', handles.settings.wallAngle*180/pi));
-set(handles.xMaxEdit, 'String', sprintf('%g', handles.settings.xMax));
-set(handles.yMaxEdit, 'String', sprintf('%g', handles.settings.yMax));
-set(handles.xMaxCheckbox, 'Value', double(handles.settings.xMaxCalcBool));
-if handles.settings.xMaxCalcBool
-    set(handles.xMaxEdit, 'Enable', 'Off');
-else
-    set(handles.xMaxEdit, 'Enable', 'On');
-end
-set(handles.pressureBoolCheckbox, 'Value', double(handles.settings.pressureBool));
-set(handles.realTimeCheckbox, 'Value', double(handles.settings.realTimeBool));
-if (strcmp(handles.settings.agentPositionStyle, 'randomLeftHalf'))
-    set(handles.agentPositionStylePopup, 'Value', 1);
-elseif (strcmp(handles.settings.agentPositionStyle, 'filename'))
-    set(handles.agentPositionStylePopup, 'Value', 2);
-end
-    
-if (strcmp(handles.settings.wallPositionStyle, 'standard'))
-    set(handles.wallPositionStylePopup, 'Value', 1);
-    set(handles.doorWidthEdit, 'Enable', 'On');
-    set(handles.wallAngleEdit, 'Enable', 'On');
-elseif (strcmp(handles.settings.wallPositionStyle, 'filename'))
-    set(handles.wallPositionStylePopup, 'Value', 2);
-    set(handles.doorWidthEdit, 'Enable', 'Off');
-    set(handles.wallAngleEdit, 'Enable', 'Off');
-end
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Buttons
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % --- Sets new settings as output and calls closing procedure
 function okProcedure(hObject, handles)
@@ -160,6 +124,49 @@ function cancelButton_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 cancelProcedure(hObject, handles);
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Edit fields
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+function fillEdits(hObject, handles)
+% fill all edit objects with the apropriate values
+set(handles.nAgentEdit, 'String', sprintf('%d', handles.settings.NAgent));
+set(handles.doorWidthEdit, 'String', sprintf('%g', handles.settings.doorWidth));
+set(handles.vDesEdit, 'String', sprintf('%g', handles.settings.vDes));
+set(handles.densityEdit, 'String', sprintf('%g', handles.settings.density));
+set(handles.AEdit, 'String', sprintf('%g', handles.settings.A));
+set(handles.BEdit, 'String', sprintf('%g', handles.settings.B));
+set(handles.kEdit, 'String', sprintf('%g', handles.settings.k));
+set(handles.kappaEdit, 'String', sprintf('%g', handles.settings.kappa));
+set(handles.tauEdit, 'String', sprintf('%g', handles.settings.tau));
+set(handles.dtPlotEdit, 'String', sprintf('%g', handles.settings.dtPlot));
+set(handles.wallAngleEdit, 'String', sprintf('%g', handles.settings.wallAngle*180/pi));
+set(handles.xMaxEdit, 'String', sprintf('%g', handles.settings.xMax));
+set(handles.yMaxEdit, 'String', sprintf('%g', handles.settings.yMax));
+set(handles.xMaxCheckbox, 'Value', double(handles.settings.xMaxCalcBool));
+if handles.settings.xMaxCalcBool
+    set(handles.xMaxEdit, 'Enable', 'Off');
+else
+    set(handles.xMaxEdit, 'Enable', 'On');
+end
+set(handles.pressureBoolCheckbox, 'Value', double(handles.settings.pressureBool));
+set(handles.realTimeCheckbox, 'Value', double(handles.settings.realTimeBool));
+if (strcmp(handles.settings.agentPositionStyle, 'randomLeftHalf'))
+    set(handles.agentPositionStylePopup, 'Value', 1);
+elseif (strcmp(handles.settings.agentPositionStyle, 'filename'))
+    set(handles.agentPositionStylePopup, 'Value', 2);
+end
+    
+if (strcmp(handles.settings.wallPositionStyle, 'standard'))
+    set(handles.wallPositionStylePopup, 'Value', 1);
+    set(handles.doorWidthEdit, 'Enable', 'On');
+    set(handles.wallAngleEdit, 'Enable', 'On');
+elseif (strcmp(handles.settings.wallPositionStyle, 'filename'))
+    set(handles.wallPositionStylePopup, 'Value', 2);
+    set(handles.doorWidthEdit, 'Enable', 'Off');
+    set(handles.wallAngleEdit, 'Enable', 'Off');
+end
 
 
 function nAgentEdit_Callback(hObject, eventdata, handles)

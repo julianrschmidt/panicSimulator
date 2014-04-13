@@ -1,6 +1,13 @@
 function [ sucess ] = validateNum( num, style, valueRange,  rowRange, columnRange)
-%VALIDATENUM Summary of this function goes here
-%   Detailed explanation goes here
+%VALIDATENUM validates if NUM is of desired format
+%   STYLE  -  'double' or 'int'
+%   VALUERANGE - desired range of values [min, max] min <= num <= max
+%   ROWRANGE, COLUMNRANGE - size(num) <= [rowRange, columnRange]
+%
+%   if one of the conditions above is not validated, sucess will be false
+%   otherwise it will be true
+% see also: VALIDATESTR
+
 if any(size(num) < [rowRange(1), columnRange(1)])...
         || any(size(num) > [rowRange(2), columnRange(2)])
     if (rowRange(1) == 0) || (columnRange(1) == 0)

@@ -3,24 +3,13 @@ function varargout = agentPlacingTimeoutGui(varargin)
 %      AGENTPLACINGTIMEOUTGUI by itself, creates a new AGENTPLACINGTIMEOUTGUI or raises the
 %      existing singleton*.
 %
-%      H = AGENTPLACINGTIMEOUTGUI returns the handle to a new AGENTPLACINGTIMEOUTGUI or the handle to
-%      the existing singleton*.
-%
-%      AGENTPLACINGTIMEOUTGUI('CALLBACK',hObject,eventData,handles,...) calls the local
-%      function named CALLBACK in AGENTPLACINGTIMEOUTGUI.M with the given input arguments.
-%
-%      AGENTPLACINGTIMEOUTGUI('Property','Value',...) creates a new AGENTPLACINGTIMEOUTGUI or raises the
-%      existing singleton*.  Starting from the left, property value pairs are
-%      applied to the GUI before agentPlacingTimeoutGui_OpeningFcn gets called.  An
-%      unrecognized property name or invalid value makes property application
-%      stop.  All inputs are passed to agentPlacingTimeoutGui_OpeningFcn via varargin.
+%      ANSWERSTRING = AGENTPLACINGTIMEOUTGUI() returns "Yes" if user wants to try
+%       with more time to find space for all agents, otherwise "No"
 %
 %      *See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
 %      instance to run (singleton)".
 %
 % See also: GUIDE, GUIDATA, GUIHANDLES
-
-% Edit the above text to modify the response to help agentPlacingTimeoutGui
 
 % Last Modified by GUIDE v2.5 24-Jan-2014 00:59:56
 

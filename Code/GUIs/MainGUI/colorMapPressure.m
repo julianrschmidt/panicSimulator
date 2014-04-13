@@ -1,6 +1,9 @@
 function [ color ] = colorMapPressure( pressure )
-%COLORMAPPRESSURE Summary of this function goes here
-%   Detailed explanation goes here
+%COLORMAPPRESSURE returns a color related to a pressure value
+%   a pressure of 0 will result in green
+%   a pressure of 1500 will result in yellow
+%   a pressure of 3000 will result in red
+%   pressure values in between take color values in between
 
 forestGreen = [34,139,34]/255;
 yellow = [255, 255, 0]/255;

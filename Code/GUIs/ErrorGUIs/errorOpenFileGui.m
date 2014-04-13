@@ -3,24 +3,14 @@ function varargout = errorOpenFileGui(varargin)
 %      ERROROPENFILEGUI by itself, creates a new ERROROPENFILEGUI or raises the
 %      existing singleton*.
 %
-%      H = ERROROPENFILEGUI returns the handle to a new ERROROPENFILEGUI or the handle to
-%      the existing singleton*.
-%
-%      ERROROPENFILEGUI('CALLBACK',hObject,eventData,handles,...) calls the local
-%      function named CALLBACK in ERROROPENFILEGUI.M with the given input arguments.
-%
-%      ERROROPENFILEGUI('Property','Value',...) creates a new ERROROPENFILEGUI or raises the
-%      existing singleton*.  Starting from the left, property value pairs are
-%      applied to the GUI before errorOpenFileGui_OpeningFcn gets called.  An
-%      unrecognized property name or invalid value makes property application
-%      stop.  All inputs are passed to errorOpenFileGui_OpeningFcn via varargin.
+%      errorOpenFileGui('filename',[pathName, fileName]) displays 
+%      "file not found" error message with also displaying the path for the
+%      file thas has not been found
 %
 %      *See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
 %      instance to run (singleton)".
 %
 % See also: GUIDE, GUIDATA, GUIHANDLES
-
-% Edit the above text to modify the response to help errorOpenFileGui
 
 % Last Modified by GUIDE v2.5 28-Jan-2014 00:55:41
 

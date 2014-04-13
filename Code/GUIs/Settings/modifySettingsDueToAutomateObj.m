@@ -1,6 +1,6 @@
 function [ settings ] = modifySettingsDueToAutomateObj( automateObj, settings )
-%MODIFYSETTINGSDUETOAUTOMATEOBJ Summary of this function goes here
-%   Detailed explanation goes here
+%MODIFYSETTINGSDUETOAUTOMATEOBJ some variables in settings need to be
+%   changed, when automateObj is created. This is done here.
 for index = 2:length(automateObj)
     automateNr = automateObj{index}.automateNr;
     switch automateNr

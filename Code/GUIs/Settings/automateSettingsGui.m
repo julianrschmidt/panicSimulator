@@ -5,7 +5,6 @@ function varargout = automateSettingsGui(varargin)
 %
 % See also: GUIDE, GUIDATA, GUIHANDLES
 
-% Edit the above text to modify the response to help automateSettingsGui
 
 % Last Modified by GUIDE v2.5 12-Apr-2014 18:22:06
 
@@ -77,70 +76,14 @@ varargout{1} = handles.output;
 % The figure can be deleted now
 delete(handles.figure1);
 
-function handles = fillEdits(hObject, handles)
-% fill all edit objects with the apropriate values
-automateObj = handles.automateObj;
-
-set(handles.automate3Checkbox, 'Value', 0);
-
-set(handles.varStartEdit, 'enable', 'off');
-set(handles.varEndEdit, 'enable', 'off');
-set(handles.varNEdit, 'enable', 'off');
-set(handles.averageNEdit, 'enable', 'off');
-
-set(handles.variableToChangePopup, 'Value', 1);
-set(handles.varStartEdit, 'String', '-');
-set(handles.varEndEdit, 'String', '-');
-set(handles.varNEdit, 'String', '-');
-set(handles.averageNEdit, 'String', '-');
-
-for index = 2:length(automateObj{1}) + 1
-    automateNr = automateObj{index}.automateNr;
-    switch automateNr
-        case 1
-            set(handles.varStartEdit, 'enable', 'on');
-            set(handles.varEndEdit, 'enable', 'on');
-            set(handles.varNEdit, 'enable', 'on');
-            set(handles.averageNEdit, 'enable', 'on');
-            
-            set(handles.variableToChangePopup, 'Value', 2);
-            set(handles.varStartEdit, 'String', sprintf('%g', automateObj{index}.vDesList(1)));
-            set(handles.varEndEdit, 'String', sprintf('%g', automateObj{index}.vDesList(end)));
-            set(handles.varNEdit, 'String', sprintf('%d', length(automateObj{index}.vDesList)));
-            set(handles.averageNEdit, 'String', sprintf('%d', automateObj{index}.averageN));
-            
-            handles.lastValidEditValues.varStart = automateObj{index}.vDesList(1);
-            handles.lastValidEditValues.varEnd = automateObj{index}.vDesList(end);
-            handles.lastValidEditValues.varN = length(automateObj{index}.vDesList);
-            handles.lastValidEditValues.averageN = length(automateObj{index}.averageN);
-        case 2
-            set(handles.varStartEdit, 'enable', 'on');
-            set(handles.varEndEdit, 'enable', 'on');
-            set(handles.varNEdit, 'enable', 'on');
-            set(handles.averageNEdit, 'enable', 'on');
-            
-            set(handles.variableToChangePopup, 'Value', 3);
-            set(handles.varStartEdit, 'String', sprintf('%g', automateObj{index}.wallAngleList(1)*180/pi));
-            set(handles.varEndEdit, 'String', sprintf('%g', automateObj{index}.wallAngleList(end)*180/pi));
-            set(handles.varNEdit, 'String', sprintf('%.d', length(automateObj{index}.wallAngleList)));
-            set(handles.averageNEdit, 'String', sprintf('%d', automateObj{index}.averageN));
-            
-            handles.lastValidEditValues.varStart = automateObj{index}.wallAngleList(1)*180/pi;
-            handles.lastValidEditValues.varEnd = automateObj{index}.wallAngleList(end)*180/pi;
-            handles.lastValidEditValues.varN = length(automateObj{index}.wallAngleList);
-            handles.lastValidEditValues.averageN = length(automateObj{index}.averageN);
-            
-        case 3
-            set(handles.automate3Checkbox, 'Value', 1);
-    end
-end
-
 function handles = generateAutomateObj(hObject, handles)
 popupNr = get(handles.variableToChangePopup, 'Value');
 switch popupNr
+    % none
     case 1
         automateObj = cell(1);
         automateObj{1} = [];
+    % automatic change of velocity
     case 2
         automateObj = cell(1,2);
         automateObj{1} = 1;
@@ -155,6 +98,7 @@ switch popupNr
         automateObj{2}.averageIndex = 1;
         automateObj{2}.averageN = averageN;
         automateObj{2}.timeNeeded = zeros(1,length(automateObj{2}.vDesList));
+    % automatic change of wall angle
     case 3
         automateObj = cell(1,2);
         automateObj{1} = 2;
@@ -171,6 +115,7 @@ switch popupNr
         automateObj{2}.timeNeeded = zeros(1,length(automateObj{2}.wallAngleList));
 end
 
+% plot individual exit times
 if get(handles.automate3Checkbox, 'Value') == 1
         automateObj{1} = [automateObj{1}, 3];
         automateObj3 = createAutomateObj(3,handles.settings);
@@ -227,62 +172,9 @@ function cancelButton_Callback(hObject, eventdata, handles)
 cancelProcedure(hObject, handles);
 
 
-% --- Executes on selection change in variableToChangePopup.
-function variableToChangePopup_Callback(hObject, eventdata, handles)
-% hObject    handle to variableToChangePopup (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: contents = cellstr(get(hObject,'String')) returns variableToChangePopup contents as cell array
-%        contents{get(hObject,'Value')} returns selected item from variableToChangePopup
-menueValue = get(hObject,'Value');
-switch menueValue
-    case 1
-        set(handles.varStartEdit, 'enable', 'off');
-        set(handles.varEndEdit, 'enable', 'off');
-        set(handles.varNEdit, 'enable', 'off');
-        set(handles.averageNEdit, 'enable', 'off');
-    case 2
-        set(handles.varStartEdit, 'enable', 'on', 'String', '1');
-        set(handles.varEndEdit, 'enable', 'on', 'String', '6');
-        set(handles.varNEdit, 'enable', 'on', 'String', '10');
-        set(handles.averageNEdit, 'enable', 'on', 'String', '5');
-        
-        handles.lastValidEditValues.varStart = 1;
-        handles.lastValidEditValues.varEnd = 6;
-        handles.lastValidEditValues.varN = 10;
-        handles.lastValidEditValues.averageN = 5;
-        
-    case 3 
-        set(handles.varStartEdit, 'enable', 'on', 'String', '0');
-        set(handles.varEndEdit, 'enable', 'on', 'String', '90');
-        set(handles.varNEdit, 'enable', 'on', 'String', '10');
-        set(handles.averageNEdit, 'enable', 'on', 'String', '5');
-        
-        handles.lastValidEditValues.varStart = 0;
-        handles.lastValidEditValues.varEnd = 90;
-        handles.lastValidEditValues.varN = 10;
-        handles.lastValidEditValues.averageN = 5;
-            
-end
-handles = generateAutomateObj(hObject, handles);
-% Update handles structure
-guidata(hObject, handles);
-
-% --- Executes during object creation, after setting all properties.
-function variableToChangePopup_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to variableToChangePopup (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: popupmenu controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-set(hObject, 'String', {'None', 'vDes', 'wallAngle'});
-
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% menues
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % --------------------------------------------------------------------
 function openMenu_Callback(hObject, eventdata, handles)
@@ -318,6 +210,12 @@ if (FilterIndex ~= 0)
 end
 
 
+% --------------------------------------------------------------------
+function filesMenu_Callback(hObject, eventdata, handles)
+% hObject    handle to filesMenu (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
 % --- Executes on key press with focus on figure1 and none of its controls.
 function figure1_KeyPressFcn(hObject, eventdata, handles)
 % hObject    handle to figure1 (see GCBO)
@@ -331,15 +229,127 @@ if strcmp(eventdata.Key, 'escape')
 elseif strcmp(eventdata.Key, 'return')
     okProcedure(hObject, handles);
 end
+ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Edit fields
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+% --- fill all edit objects with the apropriate values
+function handles = fillEdits(hObject, handles)
+automateObj = handles.automateObj;
 
-% --------------------------------------------------------------------
-function filesMenu_Callback(hObject, eventdata, handles)
-% hObject    handle to filesMenu (see GCBO)
+set(handles.automate3Checkbox, 'Value', 0);
+
+set(handles.varStartEdit, 'enable', 'off');
+set(handles.varEndEdit, 'enable', 'off');
+set(handles.varNEdit, 'enable', 'off');
+set(handles.averageNEdit, 'enable', 'off');
+
+set(handles.variableToChangePopup, 'Value', 1);
+set(handles.varStartEdit, 'String', '-');
+set(handles.varEndEdit, 'String', '-');
+set(handles.varNEdit, 'String', '-');
+set(handles.averageNEdit, 'String', '-');
+
+for index = 2:length(automateObj{1}) + 1
+    automateNr = automateObj{index}.automateNr;
+    switch automateNr
+        % automatic change of velocity
+        case 1
+            set(handles.varStartEdit, 'enable', 'on');
+            set(handles.varEndEdit, 'enable', 'on');
+            set(handles.varNEdit, 'enable', 'on');
+            set(handles.averageNEdit, 'enable', 'on');
+            
+            set(handles.variableToChangePopup, 'Value', 2);
+            set(handles.varStartEdit, 'String', sprintf('%g', automateObj{index}.vDesList(1)));
+            set(handles.varEndEdit, 'String', sprintf('%g', automateObj{index}.vDesList(end)));
+            set(handles.varNEdit, 'String', sprintf('%d', length(automateObj{index}.vDesList)));
+            set(handles.averageNEdit, 'String', sprintf('%d', automateObj{index}.averageN));
+            
+            handles.lastValidEditValues.varStart = automateObj{index}.vDesList(1);
+            handles.lastValidEditValues.varEnd = automateObj{index}.vDesList(end);
+            handles.lastValidEditValues.varN = length(automateObj{index}.vDesList);
+            handles.lastValidEditValues.averageN = length(automateObj{index}.averageN);
+        % automatic change of wall angle
+        case 2
+            set(handles.varStartEdit, 'enable', 'on');
+            set(handles.varEndEdit, 'enable', 'on');
+            set(handles.varNEdit, 'enable', 'on');
+            set(handles.averageNEdit, 'enable', 'on');
+            
+            set(handles.variableToChangePopup, 'Value', 3);
+            set(handles.varStartEdit, 'String', sprintf('%g', automateObj{index}.wallAngleList(1)*180/pi));
+            set(handles.varEndEdit, 'String', sprintf('%g', automateObj{index}.wallAngleList(end)*180/pi));
+            set(handles.varNEdit, 'String', sprintf('%.d', length(automateObj{index}.wallAngleList)));
+            set(handles.averageNEdit, 'String', sprintf('%d', automateObj{index}.averageN));
+            
+            handles.lastValidEditValues.varStart = automateObj{index}.wallAngleList(1)*180/pi;
+            handles.lastValidEditValues.varEnd = automateObj{index}.wallAngleList(end)*180/pi;
+            handles.lastValidEditValues.varN = length(automateObj{index}.wallAngleList);
+            handles.lastValidEditValues.averageN = length(automateObj{index}.averageN);
+        % plot of individual exit times
+        case 3
+            set(handles.automate3Checkbox, 'Value', 1);
+    end
+end
+
+% --- Executes on selection change in variableToChangePopup.
+function variableToChangePopup_Callback(hObject, eventdata, handles)
+% hObject    handle to variableToChangePopup (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
+% Hints: contents = cellstr(get(hObject,'String')) returns variableToChangePopup contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from variableToChangePopup
+menueValue = get(hObject,'Value');
+switch menueValue
+    % none
+    case 1
+        set(handles.varStartEdit, 'enable', 'off');
+        set(handles.varEndEdit, 'enable', 'off');
+        set(handles.varNEdit, 'enable', 'off');
+        set(handles.averageNEdit, 'enable', 'off');
+    % velocity
+    case 2
+        set(handles.varStartEdit, 'enable', 'on', 'String', '1');
+        set(handles.varEndEdit, 'enable', 'on', 'String', '6');
+        set(handles.varNEdit, 'enable', 'on', 'String', '10');
+        set(handles.averageNEdit, 'enable', 'on', 'String', '5');
+        
+        handles.lastValidEditValues.varStart = 1;
+        handles.lastValidEditValues.varEnd = 6;
+        handles.lastValidEditValues.varN = 10;
+        handles.lastValidEditValues.averageN = 5;
+    % wall angle
+    case 3 
+        set(handles.varStartEdit, 'enable', 'on', 'String', '0');
+        set(handles.varEndEdit, 'enable', 'on', 'String', '90');
+        set(handles.varNEdit, 'enable', 'on', 'String', '10');
+        set(handles.averageNEdit, 'enable', 'on', 'String', '5');
+        
+        handles.lastValidEditValues.varStart = 0;
+        handles.lastValidEditValues.varEnd = 90;
+        handles.lastValidEditValues.varN = 10;
+        handles.lastValidEditValues.averageN = 5;
+            
+end
+handles = generateAutomateObj(hObject, handles);
+% Update handles structure
+guidata(hObject, handles);
 
+% --- Executes during object creation, after setting all properties.
+function variableToChangePopup_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to variableToChangePopup (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+set(hObject, 'String', {'None', 'vDes', 'wallAngle'});
 
 function varStartEdit_Callback(hObject, eventdata, handles)
 % hObject    handle to varStartEdit (see GCBO)

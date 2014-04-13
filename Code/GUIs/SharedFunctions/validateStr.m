@@ -1,6 +1,11 @@
 function [ num, sucess ] = validateStr( str, style, range )
-%VALIDATESTR Summary of this function goes here
-%   Detailed explanation goes here
+%VALIDATESTR validates if STR can be transformed to number and is of desired format
+%   STYLE  -  'double' or 'int'
+%   RANGE - desired range of values [min, max] min <= num <= max
+%
+%   if one of the conditions above is not validated, sucess will be false
+%   otherwise it will be true
+% see also: VALIDATENUM
 num = str2double(str);
 if isnan(num)
     num = [];
