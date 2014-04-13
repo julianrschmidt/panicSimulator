@@ -280,7 +280,7 @@ function variableToChangePopup_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
-set(hObject, 'String', {'None', 'vDes', 'wallAngle'});
+set(hObject, 'String', {'None', 'Desired velocity [m/s]', 'Angle of wall [deg]'});
 
 
 
