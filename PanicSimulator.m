@@ -5,8 +5,8 @@
 % stadia, lecture halls or rooms in general. Thereby the modeling of the 
 % pedestrian’s behavior is inspired by the model used by Helbing et al.*. 
 % The graphical user interface enables an intuitive and fast handling in
-% all settings and features of the Panic Simulator and allows convenient
-% research in the fields of panic behavior and room architectures. 
+% all settings and features of the Panic Simulator as well as it allows
+% convenient research in the fields of panic behavior and room architectures. 
 
 % The basic characteristics and features of the Panic Simulator are:
 
