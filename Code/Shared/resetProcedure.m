@@ -4,8 +4,7 @@ function handles = resetProcedure(handles)
 % handles  -  structure with handles and user data (see GUIDATA)
 
 % reset automateObj
-[handles.automateObj, handles.settings] = ...
-    resetAutomateObj(handles.automateObj, handles.settings, 0);
+[handles.automateObj] = resetAutomateObj(handles.automateObj);
 dispAutomateStatus(handles);
 
 handles = resetProcedureWithoutAutomate(handles);

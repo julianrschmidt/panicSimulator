@@ -63,16 +63,13 @@ if exist('presets/defaultAutomateSettings.mat', 'file') == 2
         if validateAutomateObj(automateObj)
             settings = modifySettingsDueToAutomateObj(automateObj, settings);
         else
-            automateObj = cell(1);A
-            automateObj{1} = [];
+            automateObj = createAutomateObj();
         end
     else
-        automateObj = cell(1);
-        automateObj{1} = [];
+        automateObj = createAutomateObj();
     end
 else
-    automateObj = cell(1);
-    automateObj{1} = [];
+    automateObj = createAutomateObj();
 end
 
 % true if drawn images are captured
@@ -360,32 +357,20 @@ function automateSettings_Callback(hObject, eventdata, handles)
 % deactivate all currently active ui controls
 deactivationStruct = deactivateUiControls(handles.figure1);
 % call automate settings PanicSimulatorGui
-handles = automateSettingsGui(handles);
+[handles, resetBool] = automateSettingsGui(handles);
 dispAutomateStatus(handles);
 
 settings = handles.settings;
 settings = modifySettingsDueToAutomateObj(handles.automateObj, settings);
 
 
-%replot arena
-plotObj = handles.plotObj;
-simulationObj = handles.simulationObj;
-
-
-delete(plotObj.hCells);
-delete(plotObj.hAgents(:));
-delete(plotObj.hColumns(:));
-delete(plotObj.hWallLines(:));
-
-%plot everything
-plotObj = plotInit(simulationObj, settings, handles.figure1);
+handles.settings = settings;
+if resetBool
+    handles = resetProcedure(handles);
+end
 
 % make ui controls active again
 reactivateUiControls(deactivationStruct);
-
-handles.plotObj = plotObj;
-handles.simulationObj = simulationObj;
-handles.settings = settings;
 
 guidata(hObject, handles);
 

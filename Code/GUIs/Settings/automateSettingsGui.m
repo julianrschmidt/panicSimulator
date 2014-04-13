@@ -41,7 +41,13 @@ handles.automateObj = handlesMain.automateObj;
 % store old settings, to be returned if user presses cancel button
 handles.settingsOld = handles.settings;
 handles.automateObjOld = handles.automateObj;
-
+handles.resetBool = false;
+handles.possibleAutomatedVariableStrings = fieldnames(handles.automateObj.possibleAutomatedVariables);
+aliasStrings = cell(1, length(handles.possibleAutomatedVariableStrings));
+for i = 1:length(aliasStrings)
+    aliasStrings{i} = handles.automateObj.possibleAutomatedVariables.(handles.possibleAutomatedVariableStrings{i}){1};
+end
+set(handles.variableToChangePopup, 'String', aliasStrings);
 handles.handlesMain = handlesMain;
 % fill all edit objects with the apropriate values
 handles = fillEdits(hObject, handles);
@@ -72,66 +78,20 @@ function varargout = automateSettingsGui_OutputFcn(hObject, eventdata, handles)
 
 % Get default command line output from handles structure
 varargout{1} = handles.output;
+varargout{2} = handles.resetBool;
 
 % The figure can be deleted now
 delete(handles.figure1);
-
-function handles = generateAutomateObj(hObject, handles)
-popupNr = get(handles.variableToChangePopup, 'Value');
-switch popupNr
-    % none
-    case 1
-        automateObj = cell(1);
-        automateObj{1} = [];
-    % automatic change of velocity
-    case 2
-        automateObj = cell(1,2);
-        automateObj{1} = 1;
-        automateObj{2}.automateNr = 1;
-        varStart = str2double(get(handles.varStartEdit, 'String'));
-        varEnd = str2double(get(handles.varEndEdit, 'String'));
-        varN = str2double(get(handles.varNEdit, 'String'));
-        averageN = str2double(get(handles.averageNEdit, 'String'));
-        automateObj{2}.vDesList = linspace(varStart,varEnd,varN);
-        handles.settings.vDes = automateObj{2}.vDesList(1);
-        automateObj{2}.vDesIndex = 1;
-        automateObj{2}.averageIndex = 1;
-        automateObj{2}.averageN = averageN;
-        automateObj{2}.timeNeeded = zeros(1,length(automateObj{2}.vDesList));
-    % automatic change of wall angle
-    case 3
-        automateObj = cell(1,2);
-        automateObj{1} = 2;
-        automateObj{2}.automateNr = 2;
-        varStart = str2double(get(handles.varStartEdit, 'String'))*pi/180;
-        varEnd = str2double(get(handles.varEndEdit, 'String'))*pi/180;
-        varN = str2double(get(handles.varNEdit, 'String'));
-        averageN = str2double(get(handles.averageNEdit, 'String'));
-        automateObj{2}.wallAngleList = linspace(varStart,varEnd,varN);
-        handles.settings = setWallAngle(handles.settings,automateObj{2}.wallAngleList(1));
-        automateObj{2}.wallAngleIndex = 1;
-        automateObj{2}.averageIndex = 1;
-        automateObj{2}.averageN = averageN;
-        automateObj{2}.timeNeeded = zeros(1,length(automateObj{2}.wallAngleList));
-end
-
-% plot individual exit times
-if get(handles.automate3Checkbox, 'Value') == 1
-        automateObj{1} = [automateObj{1}, 3];
-        automateObj3 = createAutomateObj(3,handles.settings);
-        automateObj = [automateObj, automateObj3{2}];
-end
-handles.automateObj = automateObj;
 
 
 % --- Sets new settings as output and calls closing procedure
 function okProcedure(hObject, handles)
 
+handles.resetBool = true;
 handlesMain = handles.handlesMain;
 handlesMain.settings = handles.settings;
 handlesMain.automateObj = handles.automateObj;
 handles.output = handlesMain;
-
 
 % Update handles structure
 guidata(hObject, handles);
@@ -251,48 +211,30 @@ set(handles.varEndEdit, 'String', '-');
 set(handles.varNEdit, 'String', '-');
 set(handles.averageNEdit, 'String', '-');
 
-for index = 2:length(automateObj{1}) + 1
-    automateNr = automateObj{index}.automateNr;
-    switch automateNr
-        % automatic change of velocity
-        case 1
-            set(handles.varStartEdit, 'enable', 'on');
-            set(handles.varEndEdit, 'enable', 'on');
-            set(handles.varNEdit, 'enable', 'on');
-            set(handles.averageNEdit, 'enable', 'on');
-            
-            set(handles.variableToChangePopup, 'Value', 2);
-            set(handles.varStartEdit, 'String', sprintf('%g', automateObj{index}.vDesList(1)));
-            set(handles.varEndEdit, 'String', sprintf('%g', automateObj{index}.vDesList(end)));
-            set(handles.varNEdit, 'String', sprintf('%d', length(automateObj{index}.vDesList)));
-            set(handles.averageNEdit, 'String', sprintf('%d', automateObj{index}.averageN));
-            
-            handles.lastValidEditValues.varStart = automateObj{index}.vDesList(1);
-            handles.lastValidEditValues.varEnd = automateObj{index}.vDesList(end);
-            handles.lastValidEditValues.varN = length(automateObj{index}.vDesList);
-            handles.lastValidEditValues.averageN = length(automateObj{index}.averageN);
-        % automatic change of wall angle
-        case 2
-            set(handles.varStartEdit, 'enable', 'on');
-            set(handles.varEndEdit, 'enable', 'on');
-            set(handles.varNEdit, 'enable', 'on');
-            set(handles.averageNEdit, 'enable', 'on');
-            
-            set(handles.variableToChangePopup, 'Value', 3);
-            set(handles.varStartEdit, 'String', sprintf('%g', automateObj{index}.wallAngleList(1)*180/pi));
-            set(handles.varEndEdit, 'String', sprintf('%g', automateObj{index}.wallAngleList(end)*180/pi));
-            set(handles.varNEdit, 'String', sprintf('%.d', length(automateObj{index}.wallAngleList)));
-            set(handles.averageNEdit, 'String', sprintf('%d', automateObj{index}.averageN));
-            
-            handles.lastValidEditValues.varStart = automateObj{index}.wallAngleList(1)*180/pi;
-            handles.lastValidEditValues.varEnd = automateObj{index}.wallAngleList(end)*180/pi;
-            handles.lastValidEditValues.varN = length(automateObj{index}.wallAngleList);
-            handles.lastValidEditValues.averageN = length(automateObj{index}.averageN);
-        % plot of individual exit times
-        case 3
-            set(handles.automate3Checkbox, 'Value', 1);
-    end
+if automateObj.plotIndividualExitTimesBool
+     set(handles.automate3Checkbox, 'Value', 1);
 end
+
+if ~strcmp(automateObj.activeAutomatedVariable, 'none')
+    set(handles.varStartEdit, 'enable', 'on');
+    set(handles.varEndEdit, 'enable', 'on');
+    set(handles.varNEdit, 'enable', 'on');
+    set(handles.averageNEdit, 'enable', 'on');
+
+    popupIndex = find(strcmp(handles.possibleAutomatedVariableStrings, ...
+        automateObj.activeAutomatedVariable));
+    set(handles.variableToChangePopup, 'Value', popupIndex);
+    set(handles.varStartEdit, 'String', sprintf('%g', automateObj.variableRange(1)));
+    set(handles.varEndEdit, 'String', sprintf('%g', automateObj.variableRange(end)));
+    set(handles.varNEdit, 'String', sprintf('%d', length(automateObj.variableRange)));
+    set(handles.averageNEdit, 'String', sprintf('%d', automateObj.averageN));
+
+    handles.lastValidEditValues.varStart = automateObj.variableRange(1);
+    handles.lastValidEditValues.varEnd = automateObj.variableRange(end);
+    handles.lastValidEditValues.varN = length(automateObj.variableRange);
+    handles.lastValidEditValues.averageN = automateObj.averageN;
+end
+
 
 % --- Executes on selection change in variableToChangePopup.
 function variableToChangePopup_Callback(hObject, eventdata, handles)
@@ -303,38 +245,32 @@ function variableToChangePopup_Callback(hObject, eventdata, handles)
 % Hints: contents = cellstr(get(hObject,'String')) returns variableToChangePopup contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from variableToChangePopup
 menueValue = get(hObject,'Value');
-switch menueValue
-    % none
-    case 1
-        set(handles.varStartEdit, 'enable', 'off');
-        set(handles.varEndEdit, 'enable', 'off');
-        set(handles.varNEdit, 'enable', 'off');
-        set(handles.averageNEdit, 'enable', 'off');
-    % velocity
-    case 2
-        set(handles.varStartEdit, 'enable', 'on', 'String', '1');
-        set(handles.varEndEdit, 'enable', 'on', 'String', '6');
-        set(handles.varNEdit, 'enable', 'on', 'String', '10');
-        set(handles.averageNEdit, 'enable', 'on', 'String', '5');
-        
-        handles.lastValidEditValues.varStart = 1;
-        handles.lastValidEditValues.varEnd = 6;
-        handles.lastValidEditValues.varN = 10;
-        handles.lastValidEditValues.averageN = 5;
-    % wall angle
-    case 3 
-        set(handles.varStartEdit, 'enable', 'on', 'String', '0');
-        set(handles.varEndEdit, 'enable', 'on', 'String', '90');
-        set(handles.varNEdit, 'enable', 'on', 'String', '10');
-        set(handles.averageNEdit, 'enable', 'on', 'String', '5');
-        
-        handles.lastValidEditValues.varStart = 0;
-        handles.lastValidEditValues.varEnd = 90;
-        handles.lastValidEditValues.varN = 10;
-        handles.lastValidEditValues.averageN = 5;
-            
+selectedAutomatedVariable = handles.possibleAutomatedVariableStrings{menueValue};
+if strcmp(selectedAutomatedVariable, 'none')
+    set(handles.varStartEdit, 'enable', 'off');
+    set(handles.varEndEdit, 'enable', 'off');
+    set(handles.varNEdit, 'enable', 'off');
+    set(handles.averageNEdit, 'enable', 'off');
+else
+    varStart = handles.automateObj.possibleAutomatedVariables.(selectedAutomatedVariable){3}(1);
+    varEnd = handles.automateObj.possibleAutomatedVariables.(selectedAutomatedVariable){3}(2);
+    varN = 10;
+    averageN = 5;
+    set(handles.varStartEdit, 'enable', 'on', 'String', num2str(varStart));
+    set(handles.varEndEdit, 'enable', 'on', 'String',  num2str(varEnd));
+    set(handles.varNEdit, 'enable', 'on', 'String', varN);
+    set(handles.averageNEdit, 'enable', 'on', 'String', averageN);
+    
+    handles.automateObj.variableRange = linspace(varStart, varEnd, varN);
+    handles.automateObj.exitTimes = zeros(varN,1);
+    handles.automateObj.averageN = averageN;
+    
+    handles.lastValidEditValues.varStart = varStart;
+    handles.lastValidEditValues.varEnd = varEnd;
+    handles.lastValidEditValues.varN = varN;
+    handles.lastValidEditValues.averageN = averageN;
 end
-handles = generateAutomateObj(hObject, handles);
+handles.automateObj.activeAutomatedVariable = selectedAutomatedVariable;
 % Update handles structure
 guidata(hObject, handles);
 
@@ -349,7 +285,7 @@ function variableToChangePopup_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
-set(hObject, 'String', {'None', 'vDes', 'wallAngle'});
+%set(hObject, 'String', handles.possibleAutomatedVariableStrings);
 
 function varStartEdit_Callback(hObject, eventdata, handles)
 % hObject    handle to varStartEdit (see GCBO)
@@ -358,20 +294,20 @@ function varStartEdit_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of varStartEdit as text
 %        str2double(get(hObject,'String')) returns contents of varStartEdit as a double
-popupNr = get(handles.variableToChangePopup, 'Value');
-switch popupNr
-    case 2
-        [num, sucess] = validateStr(get(hObject,'String'), 'double', [-inf,inf]);
-    case 3
-        [num, sucess] = validateStr(get(hObject,'String'), 'double', [0,90]);
-end
+activeAutomatedVariable = handles.automateObj.activeAutomatedVariable;
+[varStart, sucess] = validateStr(get(hObject,'String'), 'double', ...
+    handles.automateObj.possibleAutomatedVariables.(activeAutomatedVariable){2});
+
 if sucess
-    handles.lastValidEditValues.varStart = num;
+    handles.lastValidEditValues.varStart = varStart;
 else
-    num = handles.lastValidEditValues.varStart;
-    set(hObject,'String', sprintf('%g', num));
+    varStart = handles.lastValidEditValues.varStart;
+    set(hObject,'String', sprintf('%g', varStart));
 end
-handles = generateAutomateObj(hObject, handles);
+varEnd = handles.lastValidEditValues.varEnd;
+varN = handles.lastValidEditValues.varN;
+handles.automateObj.variableRange = linspace(varStart, varEnd, varN);
+handles.automateObj.exitTimes = zeros(varN,1);
 guidata(hObject, handles);
 
 % --- Executes during object creation, after setting all properties.
@@ -395,20 +331,20 @@ function varEndEdit_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of varEndEdit as text
 %        str2double(get(hObject,'String')) returns contents of varEndEdit as a double
-popupNr = get(handles.variableToChangePopup, 'Value');
-switch popupNr
-    case 2
-        [num, sucess] = validateStr(get(hObject,'String'), 'double', [-inf,inf]);
-    case 3
-        [num, sucess] = validateStr(get(hObject,'String'), 'double', [0,90]);
-end
+activeAutomatedVariable = handles.automateObj.activeAutomatedVariable;
+[varEnd, sucess] = validateStr(get(hObject,'String'), 'double', ...
+    handles.automateObj.possibleAutomatedVariables.(activeAutomatedVariable){2});
+
 if sucess
-    handles.lastValidEditValues.varEnd = num;
+    handles.lastValidEditValues.varStart = varEnd;
 else
-    num = handles.lastValidEditValues.varEnd;
-    set(hObject,'String', sprintf('%g', num));
+    varEnd = handles.lastValidEditValues.varEnd;
+    set(hObject,'String', sprintf('%g', varEnd));
 end
-handles = generateAutomateObj(hObject, handles);
+varStart = handles.lastValidEditValues.varStart;
+varN = handles.lastValidEditValues.varN;
+handles.automateObj.variableRange = linspace(varStart, varEnd, varN);
+handles.automateObj.exitTimes = zeros(varN,1);
 guidata(hObject, handles);
 
 % --- Executes during object creation, after setting all properties.
@@ -432,14 +368,18 @@ function varNEdit_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of varNEdit as text
 %        str2double(get(hObject,'String')) returns contents of varNEdit as a double
-[num, sucess] = validateStr(get(hObject,'String'), 'int', [1,inf]);
+[varN, sucess] = validateStr(get(hObject,'String'), 'int', [1,inf]);
+
 if sucess
-    handles.lastValidEditValues.varN = num;
+    handles.lastValidEditValues.varN = varN;
 else
-    num = handles.lastValidEditValues.varN;
-    set(hObject,'String', sprintf('%g', num));
+    varN = handles.lastValidEditValues.varN;
+    set(hObject,'String', sprintf('%g', varN));
 end
-handles = generateAutomateObj(hObject, handles);
+varStart = handles.lastValidEditValues.varStart;
+varEnd = handles.lastValidEditValues.varEnd;
+handles.automateObj.variableRange = linspace(varStart, varEnd, varN);
+handles.automateObj.exitTimes = zeros(varN,1);
 guidata(hObject, handles);
 
 % --- Executes during object creation, after setting all properties.
@@ -463,14 +403,14 @@ function averageNEdit_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of averageNEdit as text
 %        str2double(get(hObject,'String')) returns contents of averageNEdit as a double
-[num, sucess] = validateStr(get(hObject,'String'), 'int', [1,inf]);
+[averageN, sucess] = validateStr(get(hObject,'String'), 'int', [1,inf]);
 if sucess
-    handles.lastValidEditValues.averageN = num;
+    handles.lastValidEditValues.averageN = averageN;
 else
-    num = handles.lastValidEditValues.averageN;
-    set(hObject,'String', sprintf('%g', num));
+    averageN = handles.lastValidEditValues.averageN;
+    set(hObject,'String', sprintf('%g', averageN));
 end
-handles = generateAutomateObj(hObject, handles);
+handles.automateObj.averageN = averageN;
 guidata(hObject, handles);
 
 % --- Executes during object creation, after setting all properties.
@@ -493,5 +433,5 @@ function automate3Checkbox_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 % Hint: get(hObject,'Value') returns toggle state of automate3Checkbox
-handles = generateAutomateObj(hObject, handles);
+handles.automateObj.plotIndividualExitTimesBool = logical(get(hObject,'Value'));
 guidata(hObject, handles);
