@@ -7,12 +7,12 @@ settings.k = 1.2e5; %body constant in units [kg*s^(-2)]
 settings.kappa = 2.4e5; %sliding friction constant in units [kg*m^(-1)*s^(-1)]
 settings.tau = 0.5;
 
-settings.pressureBool = false;
+settings.pressureBool = true;
 settings.wallAngle = 0; % wall Angle = 0 corresponds to normal wall
 
-settings.NAgent = 10; % number of agents created if they are randomly created
+settings.NAgent = 50; % number of agents created if they are randomly created
 settings.border = 2; % border in grid
-settings.yMax = 30; %[m] length of arena in y direction
+settings.yMax = 20; %[m] length of arena in y direction
 settings.doorWidth = 1; %[m]    % width of door, only relevant if standard 
                                 % columns are created
 
@@ -42,7 +42,7 @@ settings.wallPositionFilename = '';% full filename to file containing at
 
 
 settings.dt = 0.01; %[s] simulated time step
-settings.dtPlot = 1/2; %[s] frame shown in these time steps
+settings.dtPlot = 0.5; %[s] frame shown in these time steps
 settings.realTimeBool = false;
 
 end

@@ -10,7 +10,7 @@ xMax = settings.xMax;%[m]
 yMax = settings.yMax; %[m]
 doorWidth = settings.doorWidth; %[m]
 border = settings.border;
-wallAngle = settings.wallAngle;
+wallAngle = settings.wallAngle/180*pi;
 
 
                     
@@ -44,7 +44,7 @@ exitCoord = [xMax - border, yMax/2 - doorWidth/2, xMax - border, yMax/2 + doorWi
 columns = [];
 wallLines = [];
 
-XIntersect = 0.5*(settings.yMax-settings.doorWidth)*tan(settings.wallAngle); % wall minimum in x direction
+XIntersect = 0.5*(settings.yMax-settings.doorWidth)*tan(wallAngle); % wall minimum in x direction
 if strcmp(settings.wallPositionStyle, 'standard')    
 
     if XIntersect + border < xMax
