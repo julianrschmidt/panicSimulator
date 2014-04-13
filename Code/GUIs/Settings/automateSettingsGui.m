@@ -6,7 +6,7 @@ function varargout = automateSettingsGui(varargin)
 % See also: GUIDE, GUIDATA, GUIHANDLES
 
 
-% Last Modified by GUIDE v2.5 12-Apr-2014 18:22:06
+% Last Modified by GUIDE v2.5 13-Apr-2014 19:19:14
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -142,7 +142,7 @@ function openMenu_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 [fileName, pathName, filterIndex] = uigetfile('*.mat', ...
-    'Load automate settings...', './presets/automateObj.mat');
+    'Load automate settings...', './presets/automateSettings.mat');
 if filterIndex ~= 0
     if sum(strcmp(who('-file', [pathName, fileName]), 'automateObj')) == 1
         load([pathName, fileName], 'automateObj');
@@ -164,7 +164,7 @@ function saveAsMenu_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 automateObj = handles.automateObj;
-[filename, pathname, FilterIndex] = uiputfile('*.mat', 'Save automate settings as...', './presets/automateObj.mat');
+[filename, pathname, FilterIndex] = uiputfile('*.mat', 'Save automate settings as...', './presets/automateSettings.mat');
 if (FilterIndex ~= 0)
     save([pathname, filename], 'automateObj');
 end
@@ -198,27 +198,27 @@ end
 function handles = fillEdits(hObject, handles)
 automateObj = handles.automateObj;
 
-set(handles.automate3Checkbox, 'Value', 0);
+set(handles.individualExitTimesCheckbox, 'Value', 0);
 
 set(handles.varStartEdit, 'enable', 'off');
 set(handles.varEndEdit, 'enable', 'off');
-set(handles.varNEdit, 'enable', 'off');
+set(handles.varStepEdit, 'enable', 'off');
 set(handles.averageNEdit, 'enable', 'off');
 
 set(handles.variableToChangePopup, 'Value', 1);
 set(handles.varStartEdit, 'String', '-');
 set(handles.varEndEdit, 'String', '-');
-set(handles.varNEdit, 'String', '-');
+set(handles.varStepEdit, 'String', '-');
 set(handles.averageNEdit, 'String', '-');
 
 if automateObj.plotIndividualExitTimesBool
-     set(handles.automate3Checkbox, 'Value', 1);
+     set(handles.individualExitTimesCheckbox, 'Value', 1);
 end
 
 if ~strcmp(automateObj.activeAutomatedVariable, 'none')
     set(handles.varStartEdit, 'enable', 'on');
     set(handles.varEndEdit, 'enable', 'on');
-    set(handles.varNEdit, 'enable', 'on');
+    set(handles.varStepEdit, 'enable', 'on');
     set(handles.averageNEdit, 'enable', 'on');
 
     popupIndex = find(strcmp(handles.possibleAutomatedVariableStrings, ...
@@ -226,12 +226,12 @@ if ~strcmp(automateObj.activeAutomatedVariable, 'none')
     set(handles.variableToChangePopup, 'Value', popupIndex);
     set(handles.varStartEdit, 'String', sprintf('%g', automateObj.variableRange(1)));
     set(handles.varEndEdit, 'String', sprintf('%g', automateObj.variableRange(end)));
-    set(handles.varNEdit, 'String', sprintf('%d', length(automateObj.variableRange)));
+    set(handles.varStepEdit, 'String', sprintf('%d', length(automateObj.variableRange)));
     set(handles.averageNEdit, 'String', sprintf('%d', automateObj.averageN));
 
     handles.lastValidEditValues.varStart = automateObj.variableRange(1);
     handles.lastValidEditValues.varEnd = automateObj.variableRange(end);
-    handles.lastValidEditValues.varN = length(automateObj.variableRange);
+    handles.lastValidEditValues.varStep = length(automateObj.variableRange);
     handles.lastValidEditValues.averageN = automateObj.averageN;
 end
 
@@ -249,25 +249,25 @@ selectedAutomatedVariable = handles.possibleAutomatedVariableStrings{menueValue}
 if strcmp(selectedAutomatedVariable, 'none')
     set(handles.varStartEdit, 'enable', 'off');
     set(handles.varEndEdit, 'enable', 'off');
-    set(handles.varNEdit, 'enable', 'off');
+    set(handles.varStepEdit, 'enable', 'off');
     set(handles.averageNEdit, 'enable', 'off');
 else
     varStart = handles.automateObj.possibleAutomatedVariables.(selectedAutomatedVariable){3}(1);
     varEnd = handles.automateObj.possibleAutomatedVariables.(selectedAutomatedVariable){3}(2);
-    varN = 10;
+    varStep = handles.automateObj.possibleAutomatedVariables.(selectedAutomatedVariable){3}(3);
     averageN = 5;
     set(handles.varStartEdit, 'enable', 'on', 'String', num2str(varStart));
     set(handles.varEndEdit, 'enable', 'on', 'String',  num2str(varEnd));
-    set(handles.varNEdit, 'enable', 'on', 'String', varN);
+    set(handles.varStepEdit, 'enable', 'on', 'String', varStep);
     set(handles.averageNEdit, 'enable', 'on', 'String', averageN);
     
-    handles.automateObj.variableRange = linspace(varStart, varEnd, varN);
-    handles.automateObj.exitTimes = zeros(varN,1);
+    handles.automateObj.variableRange = varStart:varStep:varEnd;
+    handles.automateObj.exitTimes = zeros(length(handles.automateObj.variableRange),1);
     handles.automateObj.averageN = averageN;
     
     handles.lastValidEditValues.varStart = varStart;
     handles.lastValidEditValues.varEnd = varEnd;
-    handles.lastValidEditValues.varN = varN;
+    handles.lastValidEditValues.varStep = varStep;
     handles.lastValidEditValues.averageN = averageN;
 end
 handles.automateObj.activeAutomatedVariable = selectedAutomatedVariable;
@@ -285,7 +285,6 @@ function variableToChangePopup_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
-%set(hObject, 'String', handles.possibleAutomatedVariableStrings);
 
 function varStartEdit_Callback(hObject, eventdata, handles)
 % hObject    handle to varStartEdit (see GCBO)
@@ -295,7 +294,8 @@ function varStartEdit_Callback(hObject, eventdata, handles)
 % Hints: get(hObject,'String') returns contents of varStartEdit as text
 %        str2double(get(hObject,'String')) returns contents of varStartEdit as a double
 activeAutomatedVariable = handles.automateObj.activeAutomatedVariable;
-[varStart, sucess] = validateStr(get(hObject,'String'), 'double', ...
+intOrDoubleStr = handles.automateObj.possibleAutomatedVariables.(activeAutomatedVariable){5};
+[varStart, sucess] = validateStr(get(hObject,'String'), intOrDoubleStr, ...
     handles.automateObj.possibleAutomatedVariables.(activeAutomatedVariable){2});
 
 if sucess
@@ -305,9 +305,9 @@ else
     set(hObject,'String', sprintf('%g', varStart));
 end
 varEnd = handles.lastValidEditValues.varEnd;
-varN = handles.lastValidEditValues.varN;
-handles.automateObj.variableRange = linspace(varStart, varEnd, varN);
-handles.automateObj.exitTimes = zeros(varN,1);
+varStep = handles.lastValidEditValues.varStep;
+handles.automateObj.variableRange = varStart:varStep: varEnd;
+handles.automateObj.exitTimes = zeros(varStep,1);
 guidata(hObject, handles);
 
 % --- Executes during object creation, after setting all properties.
@@ -332,7 +332,9 @@ function varEndEdit_Callback(hObject, eventdata, handles)
 % Hints: get(hObject,'String') returns contents of varEndEdit as text
 %        str2double(get(hObject,'String')) returns contents of varEndEdit as a double
 activeAutomatedVariable = handles.automateObj.activeAutomatedVariable;
-[varEnd, sucess] = validateStr(get(hObject,'String'), 'double', ...
+intOrDoubleStr = handles.automateObj.possibleAutomatedVariables.(activeAutomatedVariable){5};
+
+[varEnd, sucess] = validateStr(get(hObject,'String'), intOrDoubleStr, ...
     handles.automateObj.possibleAutomatedVariables.(activeAutomatedVariable){2});
 
 if sucess
@@ -342,9 +344,9 @@ else
     set(hObject,'String', sprintf('%g', varEnd));
 end
 varStart = handles.lastValidEditValues.varStart;
-varN = handles.lastValidEditValues.varN;
-handles.automateObj.variableRange = linspace(varStart, varEnd, varN);
-handles.automateObj.exitTimes = zeros(varN,1);
+varStep = handles.lastValidEditValues.varStep;
+handles.automateObj.variableRange = linspace(varStart, varEnd, varStep);
+handles.automateObj.exitTimes = zeros(varStep,1);
 guidata(hObject, handles);
 
 % --- Executes during object creation, after setting all properties.
@@ -361,30 +363,32 @@ end
 
 
 
-function varNEdit_Callback(hObject, eventdata, handles)
-% hObject    handle to varNEdit (see GCBO)
+function varStepEdit_Callback(hObject, eventdata, handles)
+% hObject    handle to varStepEdit (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hints: get(hObject,'String') returns contents of varNEdit as text
-%        str2double(get(hObject,'String')) returns contents of varNEdit as a double
-[varN, sucess] = validateStr(get(hObject,'String'), 'int', [1,inf]);
+% Hints: get(hObject,'String') returns contents of varStepEdit as text
+%        str2double(get(hObject,'String')) returns contents of varStepEdit as a double
+activeAutomatedVariable = handles.automateObj.activeAutomatedVariable;
+intOrDoubleStr = handles.automateObj.possibleAutomatedVariables.(activeAutomatedVariable){5};
+[varStep, sucess] = validateStr(get(hObject,'String'), intOrDoubleStr, [eps,inf]);
 
 if sucess
-    handles.lastValidEditValues.varN = varN;
+    handles.lastValidEditValues.varStep = varStep;
 else
-    varN = handles.lastValidEditValues.varN;
-    set(hObject,'String', sprintf('%g', varN));
+    varStep = handles.lastValidEditValues.varStep;
+    set(hObject,'String', sprintf('%g', varStep));
 end
 varStart = handles.lastValidEditValues.varStart;
 varEnd = handles.lastValidEditValues.varEnd;
-handles.automateObj.variableRange = linspace(varStart, varEnd, varN);
-handles.automateObj.exitTimes = zeros(varN,1);
+handles.automateObj.variableRange = varStart:varStep:varEnd;
+handles.automateObj.exitTimes = zeros(length(handles.automateObj.variableRange),1);
 guidata(hObject, handles);
 
 % --- Executes during object creation, after setting all properties.
-function varNEdit_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to varNEdit (see GCBO)
+function varStepEdit_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to varStepEdit (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -426,12 +430,12 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 
 
-% --- Executes on button press in automate3Checkbox.
-function automate3Checkbox_Callback(hObject, eventdata, handles)
-% hObject    handle to automate3Checkbox (see GCBO)
+% --- Executes on button press in individualExitTimesCheckbox.
+function individualExitTimesCheckbox_Callback(hObject, eventdata, handles)
+% hObject    handle to individualExitTimesCheckbox (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hint: get(hObject,'Value') returns toggle state of automate3Checkbox
+% Hint: get(hObject,'Value') returns toggle state of individualExitTimesCheckbox
 handles.automateObj.plotIndividualExitTimesBool = logical(get(hObject,'Value'));
 guidata(hObject, handles);

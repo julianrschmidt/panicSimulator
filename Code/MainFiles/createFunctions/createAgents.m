@@ -13,7 +13,7 @@ function [ agents ] = createAgents( settings )
 %copy settings to local variables
 NAgent = settings.NAgent;
 border = settings.border;
-wallAngle = settings.wallAngle;
+wallAngle = settings.wallAngle/180*pi;
 doorWidth = settings.doorWidth;
 xMax = settings.xMax;
 yMax = settings.yMax;

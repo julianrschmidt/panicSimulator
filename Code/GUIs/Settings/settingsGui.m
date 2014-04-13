@@ -141,7 +141,7 @@ set(handles.kEdit, 'String', sprintf('%g', handles.settings.k));
 set(handles.kappaEdit, 'String', sprintf('%g', handles.settings.kappa));
 set(handles.tauEdit, 'String', sprintf('%g', handles.settings.tau));
 set(handles.dtPlotEdit, 'String', sprintf('%g', handles.settings.dtPlot));
-set(handles.wallAngleEdit, 'String', sprintf('%g', handles.settings.wallAngle*180/pi));
+set(handles.wallAngleEdit, 'String', sprintf('%g', handles.settings.wallAngle));
 set(handles.xMaxEdit, 'String', sprintf('%g', handles.settings.xMax));
 set(handles.yMaxEdit, 'String', sprintf('%g', handles.settings.yMax));
 set(handles.xMaxCheckbox, 'Value', double(handles.settings.xMaxCalcBool));
@@ -488,7 +488,7 @@ function wallAngleEdit_Callback(hObject, eventdata, handles)
 [num, sucess] = validateStr(get(hObject,'String'), 'double', [0,90]);
 if sucess
     handles.resetBool = true;
-    handles.settings = setWallAngle(handles.settings, num*pi/180);
+    handles.settings = setWallAngle(handles.settings, num);
     % Update handles structure
     guidata(hObject, handles);
 else 
