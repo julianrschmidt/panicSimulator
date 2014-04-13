@@ -17,7 +17,7 @@ delete(handles.temp.hLine);
 radiusMax = str2double(get(handles.wallRadiusEdit, 'String'));
 
 % generate line of columns
-newWalls = createWallLine(startPoint(1), startPoint(2), endPoint(1), endPoint(2), radiusMax);
+newWalls = createLineOfColumns(startPoint(1), startPoint(2), endPoint(1), endPoint(2), radiusMax);
 handles.simulationObj.columns = [handles.simulationObj.columns; newWalls];
 
 % store wall id in wall drawings

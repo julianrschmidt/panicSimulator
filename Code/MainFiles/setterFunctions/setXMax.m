@@ -1,6 +1,5 @@
 function [ settings ] = setXMax( settings, xMax )
-%SETXMAX Summary of this function goes here
-%   Detailed explanation goes here
+%SETXMAX changes xMax to desired value
 settings.xMax = xMax;
 
 end

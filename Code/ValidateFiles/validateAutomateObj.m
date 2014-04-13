@@ -1,6 +1,5 @@
 function [ validatedBool ] = validateAutomateObj( automateObj )
-%VALIDATEAUTOMATEOBJ Summary of this function goes here
-%   Detailed explanation goes here
+%VALIDATEAUTOMATEOBJ validates if automateObj is of right format
 if ~iscell(automateObj)
     validatedBool = false;
     return

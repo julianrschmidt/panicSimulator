@@ -1,8 +1,9 @@
 function [ simulationObj ] = agentsStep( simulationObj, settings, hObject)
-%AGENTSSTEP calculates the new agent matrix after one agent
-% details needed!!!
+%AGENTSSTEP calculates the new agent matrix after one time step with ode23
+%   and the right hand side of the ODE of this model defined by odeRhs or
+%   odeRhsWithPressure if pressure calculations are included
+% see also: ODE23
 
-%tic
 
 agents = simulationObj.agents;
 t = simulationObj.tSimulation;
@@ -13,16 +14,8 @@ dt = settings.dtPlot; %get 'dt'
 pressureBool = settings.pressureBool;
 
 NAgent = size(agents, 1); %get number of agents
-%%---simple integration----------------------------------------------------
-% if NAgent ~= 0
-%     agents(:,1) = agents(:,1) + agents(:,3)*dt;
-%     agents(:,2) = agents(:,2) + agents(:,4)*dt;
-% 
-%     agents(:,3) = agents(:,3) + 1/mass*forceMatrix(:,1)*dt;
-%     agents(:,4) = agents(:,4) + 1/mass*forceMatrix(:,2)*dt;
-% end
 
-%%---ode45 integration-----------------------------------------------------
+%%---ode23 integration-----------------------------------------------------
 
 odeVec = reshape(agents(:,1:4),4*NAgent,1); %create 'odeVec' initial state column vector (with radius)
 radii = agents(:,5);

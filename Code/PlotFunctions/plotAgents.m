@@ -1,7 +1,7 @@
 function [hAgents, hColumns, hWallLines, hExit] = plotAgents( agents, columns, wallLines, exitCoord, xMax, yMax )
 %PLOTAGENTS plots all agents and columns in the range [xMax, yMax]
-% returns the handle to all agent circles (hagents) and all wall
-% circles (hColumns)
+% returns the handle to all agent circles (hAgents) and all wall
+% columns (hColumns)
 % the agent and wall ids are also stored in the 'UserData' of each circle
 % object
 xlim([0, xMax]);

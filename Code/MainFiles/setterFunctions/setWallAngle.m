@@ -1,6 +1,5 @@
 function [ settings ] = setWallAngle( settings, wallAngle )
-%SETWALLANGLE Summary of this function goes here
-%   Detailed explanation goes here
+%SETWALLANGLE changes wall angle to desired value, also adapts xMax
 settings.wallAngle = wallAngle;
 if settings.xMaxCalcBool
     settings = setXMax(settings, calcXMax(settings));

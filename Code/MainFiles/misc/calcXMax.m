@@ -1,6 +1,7 @@
 function [ xMax ] = calcXMax( settings )
-%CALCXMAX Summary of this function goes here
-%   Detailed explanation goes here
+%CALCXMAX calculates arena width dependent on agent number and arena
+%height, such that all agents can randomly fit in the arena
+
 rMax = 0.3;
 XIntersect = 0.5*(settings.yMax-settings.doorWidth)*tan(settings.wallAngle); % wall minimum in x direction
 ADoor = XIntersect*0.5*(settings.yMax+settings.doorWidth); %area near the door

@@ -1,23 +1,28 @@
-%rhs.m: function file for use with ode45 
-%rhs.m: returns right hand side of 1st order ODE "d(rv)/dt = f(t,rv)"
-
 function out = odeRhsWithPressure(~,odeVec,radii,columns,wallLines, exitCoord, settings, hObject) % input: time vector dt and initial state vector odeVec
-% initial state vector 'odeVec' is a row vector:
-% x(agent1),...,x(agentN),y(agent1),...,y(agentN),vx(agent1),...,vx(agentN),vy(agent1),...,vy(agentN)
+%ODERHSWITHPRESSURE returns right hand side of 1st order ODE "dv/dt = f(t,v)"
+%   where in our case f_i(t,v) = 1/m*(m*vDes/tau(desiredDirection_i - v_i)
+%                       + sum(agent interactions) + sum(wall interactions))
+%
+%   also calculates pressure and stores it directly through guiData
+%   therefore slower than odeRhs
+%
+%   input: initial state vector odeVec, agent radii, columns, wallLines, 
+%           exit coordinates, settings and handle to main figure
+%
+%   initial state vector 'odeVec' is a row vector:
+%       [x(agent1),...,x(agentN),y(agent1),...,y(agentN),
+%        vx(agent1),...,vx(agentN),vy(agent1),...,vy(agentN)]
+% see also: ODE23, ODERHS
 
 handles = guidata(hObject);
 
 NAgent = size(odeVec,1) / 4;
 agents = [reshape(odeVec,NAgent,4),radii];
 radialForceVec = zeros(NAgent,1);
-%forceMatrix = zeros(NAgent, 2);
-
 
 vDes  = settings.vDes;  %get 'vDes'
 density  = settings.density;  %get 'mass'
 mass = density.*pi.*radii.^2;
-%yMax  = settings.yMax;  %get 'yMax'
-%dt    = settings.dt;    %get 'dt'
 
 %---accelI force-----------------------------------------------------------
 

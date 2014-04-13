@@ -1,7 +1,9 @@
 function simulationObj = createSimulationObj( settings, simulationObj)
-%CREATESIMULATIONOBJ generates agent matrix and wall matrix in dependence on settings
+%CREATESIMULATIONOBJ generates agent matrix and wall matrix and exit line
+%   dependent on settings
 %   agents: [x, y, vx, vy, radius]
 %   columns: [x, y, radius]
+%   wall lines: [x1, y1, x2, y2]
 
 % copying the settings variables to local variables
 xMax = settings.xMax;%[m]
