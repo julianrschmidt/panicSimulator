@@ -18,7 +18,7 @@ delete(handles.temp.hCircle);
 radiusMax = str2double(get(handles.wallRadiusEdit, 'String'));
 
 % generate line of columns
-newWalls = createColumn(startPoint(1), startPoint(2), r, radiusMax);
+newWalls = createCircleOfColumns(startPoint(1), startPoint(2), r, radiusMax);
 handles.simulationObj.columns = [handles.simulationObj.columns; newWalls];
 
 % store wall id in wall drawings

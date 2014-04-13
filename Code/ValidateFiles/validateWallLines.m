@@ -1,6 +1,6 @@
 function [ validatedBool ] = validateWallLines( wallLines )
-%VALIDATEWALLLINES Summary of this function goes here
-%   Detailed explanation goes here
+%VALIDATEWALLLINES validates if wallLines is of right format
+
 if validateNum(wallLines, 'double', [-inf,inf], [0, inf], [4,4])
     validatedBool = true;
     return

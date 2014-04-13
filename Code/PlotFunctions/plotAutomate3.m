@@ -1,6 +1,6 @@
 function [automateObj3] = plotAutomate3( automateObj3 )
-%PLOTAUTOMATE2 Summary of this function goes here
-%   Detailed explanation goes here
+%PLOTAUTOMATE2 plots all individual exit times in addition to already
+%   existing ones
 if ishandle(automateObj3.hFig)
     figure(automateObj3.hFig);
 else

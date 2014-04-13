@@ -1,6 +1,5 @@
 function [ settings ] = setNAgent( settings, NAgent )
-%SETNAGENT Summary of this function goes here
-%   Detailed explanation goes here
+%SETNAGENT changes NAgent in settings to desired value, also adapts xMax
 settings.NAgent = NAgent;
 if settings.xMaxCalcBool
     settings = setXMax(settings, calcXMax(settings));

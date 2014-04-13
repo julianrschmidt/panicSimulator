@@ -1,23 +1,22 @@
-%rhs.m: function file for use with ode45 
-%rhs.m: returns right hand side of 1st order ODE "d(rv)/dt = f(t,rv)"
-
-function out = odeRhs(~,odeVec,radii,columns,wallLines,exitCoord,settings) % input: time vector dt and initial state vector odeVec
-% initial state vector 'odeVec' is a row vector:
-% x(agent1),...,x(agentN),y(agent1),...,y(agentN),vx(agent1),...,vx(agentN),vy(agent1),...,vy(agentN)
-
-% handles = guidata(hObject);
+function out = odeRhs(~,odeVec,radii,columns,wallLines,exitCoord,settings) 
+%ODERHS returns right hand side of 1st order ODE "dv/dt = f(t,v)"
+%   where in our case f_i(t,v) = 1/m*(m*vDes/tau(desiredDirection_i - v_i)
+%                       + sum(agent interactions) + sum(wall interactions))
+%
+%   input: initial state vector odeVec, agent radii, the columns, the
+%       wallLines, the exit coordinates and the settings
+%
+%   initial state vector 'odeVec' is a row vector:
+%       [x(agent1),...,x(agentN),y(agent1),...,y(agentN),
+%        vx(agent1),...,vx(agentN),vy(agent1),...,vy(agentN)]
+% see also: ODE23, ODERHSWITHPRESSURE
 
 NAgent = size(odeVec,1) / 4;
 agents = [reshape(odeVec,NAgent,4),radii];
-% radialForceVec = zeros(NAgent,1);
-%forceMatrix = zeros(NAgent, 2);
-
 
 vDes  = settings.vDes;  %get 'vDes'
 density  = settings.density;  %get 'density'
 mass = density.*pi.*radii.^2;
-%yMax  = settings.yMax;  %get 'yMax'
-%dt    = settings.dt;    %get 'dt'
 
 
 %---accelI force-----------------------------------------------------------
@@ -163,8 +162,6 @@ if size(columns, 1) > 0
         bodyX = body.*nxij;
         bodyY = body.*nyij;
 
-    %     radialForceMatrix = body;
-
         meshvx = repmat(agents(:,3), 1, size(columns, 1));
         meshvy = repmat(agents(:,4), 1, size(columns, 1));
 
@@ -175,8 +172,6 @@ if size(columns, 1) > 0
 
         forceMatrixX = forceMatrixX + bodyX + slidingX;
         forceMatrixY = forceMatrixY + bodyY + slidingY;
-
-    %     radialForceVec = radialForceVec + sum(radialForceMatrix,2);
     end
 
     agentForceVecX = agentForceVecX + sum(forceMatrixX,2);
@@ -270,12 +265,7 @@ agentForceVecX = agentForceVecX + sum(forceMatrixX,2);
 agentForceVecY = agentForceVecY + sum(forceMatrixY,2);
 
 end
-
-
-
 out = [odeVec(2*NAgent+1:4*NAgent);agentForceVecX./mass;agentForceVecY./mass]; % "dx/dt = v1", "dy/dt = v2"
-% handles.simulationObj.pressure = radialForceVec./(2*pi*radii);
-% guidata(hObject, handles);
 end
 
 

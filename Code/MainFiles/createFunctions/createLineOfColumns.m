@@ -1,8 +1,8 @@
-function [ WallPoints ] = createWallLine( Xstart, Ystart, Xend, Yend, radiusMax )
-%CREATEWALLLINE returns coordinates of the center of equally distant 
+function [ WallPoints ] = createLineOfColumns( Xstart, Ystart, Xend, Yend, radiusMax )
+%CREATELINEOFCOLUMNS returns coordinates of the center of equally distant 
 % points on a line or lines from [Xstart, Ystart] to [Xend, Yend].
-% Each point has a maximum radius of radiusMax. 
-% A minimum nummber of points is created. 
+% Each column has a maximum radius of radiusMax. 
+% A minimum nummber of columns is created. 
 % The first and last do not extend the line.
 WallPoints = [];
 

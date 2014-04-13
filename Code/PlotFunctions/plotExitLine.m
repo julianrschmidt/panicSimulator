@@ -1,6 +1,5 @@
 function hExitLine = plotExitLine( x, y )
-%PLOTEXITLINE Summary of this function goes here
-%   Detailed explanation goes here
+%PLOTEXITLINE plots the green-red exit line from (x1,y1) to (x2,y2)
 green = [127 255 0]/255;
 red = [255 69 0]/255;
 hExitLine = zeros(1,2);

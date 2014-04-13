@@ -1,6 +1,6 @@
 function hWallLine = plotWallLine( x, y )
-%PLOTWALLLINE Summary of this function goes here
-%   Detailed explanation goes here
+%PLOTWALLLINE plots a wall line from (x1,y1) to (x2,y2)
+
 midnightBlue = [25 25 112]/255;
 thickness = 0.3; %thickness of door in cm
 nx = y(1) - y(2);

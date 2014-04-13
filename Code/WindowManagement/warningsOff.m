@@ -1,6 +1,7 @@
 function warningsOff( )
-%WARNINGSOFF Summary of this function goes here
-%   Detailed explanation goes here
+%WARNINGSOFF Switches some warnings off
+
+%warning that no frames have been written in video file
 warning('off', 'MATLAB:audiovideo:VideoWriter:noFramesWritten');
 
 end

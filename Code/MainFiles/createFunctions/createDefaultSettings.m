@@ -1,7 +1,6 @@
 function [ settings ] = createDefaultSettings(  )
-%CREATEDEFAULTSETTINGS this function can be called to produce a standard settings 
-% structure
-% settings.automateNrList = 1; % case1 = different vDes
+%CREATEDEFAULTSETTINGS this function can be called to produce a default 
+% settings structure
 settings.A = 2000; %force in [Newton]
 settings.B = 0.08; %distance in [meter]
 settings.k = 1.2e5; %body constant in units [kg*s^(-2)]
