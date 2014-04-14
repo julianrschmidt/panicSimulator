@@ -21,7 +21,7 @@ function varargout = arenaEditor(varargin)
 % See also: GUIDE, GUIDATA, GUIHANDLES
 
 
-% Last Modified by GUIDE v2.5 10-Apr-2014 21:26:48
+% Last Modified by GUIDE v2.5 14-Apr-2014 17:29:04
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -658,7 +658,7 @@ switch newTool
         set(hCells, 'ButtonDownFcn', @circleOfColumnsButtonDown);
     case 'newWallTool'   
         set(handles.infoText, 'String', ...
-            '   Click and drag to draw new columns.');
+            '   Click and drag to draw new wall.');
         hCells = handles.plotObj.hCells;    
         set(hCells, 'ButtonDownFcn', @newWallLineButtonDown);
     case 'newExitTool'   
@@ -707,3 +707,5 @@ function infoText_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
+
+
