@@ -5,6 +5,7 @@ function handles = resetProcedure(handles)
 
 % reset automateObj
 [handles.automateObj] = resetAutomateObj(handles.automateObj);
+handles.settings = modifySettingsDueToAutomateObj(handles.automateObj, handles.settings);
 dispAutomateStatus(handles);
 
 handles = resetProcedureWithoutAutomate(handles);

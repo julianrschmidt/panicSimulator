@@ -18,6 +18,7 @@ delete(plotObj.hCells);
 delete(plotObj.hAgents(:));
 delete(plotObj.hColumns(:));
 delete(plotObj.hWallLines(:));
+delete(plotObj.hExit(:));
 % plot everything
 plotObj = plotInit(simulationObj, handles.settings, handles.figure1);
 % store everything
