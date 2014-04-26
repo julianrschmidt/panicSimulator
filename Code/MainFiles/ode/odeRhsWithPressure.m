@@ -87,8 +87,8 @@ ey = yDesVec ./ dist2AimsVec; %normalised vector of the desired direction (y-com
 
 tau = settings.tau; %characteristic acceleration time [s]
 
-agentForceVecX = mass./tau .* (vDes*ex - agents(:,3)).* (rand(NAgent, 1)*0.2+0.9); %acceleration in x-direction
-agentForceVecY = mass./tau .* (vDes*ey - agents(:,4)).* (rand(NAgent, 1)*0.2+0.9); %acceleration in y-direction
+agentForceVecX = mass./tau .* (vDes*ex - agents(:,3));%.* (rand(NAgent, 1)*0.2+0.9); %acceleration in x-direction
+agentForceVecY = mass./tau .* (vDes*ey - agents(:,4));%.* (rand(NAgent, 1)*0.2+0.9); %acceleration in y-direction
 
 %---forceIJ----------------------------------------------------------------
 A = settings.A; %force in [Newton]
