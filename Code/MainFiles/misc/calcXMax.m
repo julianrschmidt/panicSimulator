@@ -6,7 +6,7 @@ wallAngle = settings.wallAngle/180*pi;
 rMax = 0.3;
 XIntersect = 0.5*(settings.yMax-settings.doorWidth)*tan(wallAngle); % wall minimum in x direction
 ADoor = XIntersect*0.5*(settings.yMax+settings.doorWidth); %area near the door
-AAgent = (4*rMax)^2; % area needed per Agent
+AAgent = 10.4*rMax^2; % area needed per Agent
 buffer = 1; % add buffer to xMax
 if settings.NAgent*AAgent < ADoor
     xMax = max((-settings.doorWidth+sqrt(settings.doorWidth^2+4*settings.NAgent*AAgent/tan(wallAngle)))/(2/tan(wallAngle)), (-settings.doorWidth-sqrt(settings.doorWidth^2+4*settings.NAgent*AAgent/tan(wallAngle)))/(2/tan(wallAngle)));
