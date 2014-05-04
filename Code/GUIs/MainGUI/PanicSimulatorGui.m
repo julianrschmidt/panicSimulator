@@ -214,7 +214,7 @@ function captureProcedure(handles)
 hObject = handles.captureButton;
 if ~get(hObject, 'Value')
     % make button grey    
-    set(hObject, 'BackgroundColor', [0.702, 0.702, 0.702]);
+    set(hObject, 'BackgroundColor', [240, 240, 240]/255);
     % change tooltip of capturing button
     set(hObject, 'TooltipString', 'Capture the panic as avi file (c)');
     handles.captureBool = false;
@@ -223,7 +223,12 @@ if ~get(hObject, 'Value')
     % delete file if no frame has been recorded
     if get(handles.videoObj,'FrameCount') == 0
         delete([get(handles.videoObj,'Path'),'/',get(handles.videoObj, 'Filename')]);
+        infoNoFramesCapturedGui();
+    else
+        filename = get(handles.videoObj, 'Filename');
+        infoVideoFileSavedGui('filename', filename);
     end
+
 else
     % make button red    
     set(hObject, 'BackgroundColor', [1, 0, 0]) 

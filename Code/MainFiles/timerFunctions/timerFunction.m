@@ -16,7 +16,8 @@ if size(handles.simulationObj.agents, 1) ~= 0
     plotUpdate(hAgents, simulationObj.agents, simulationObj.pressure);
     drawnow;
     if (captureBool)
-        writeVideo(handles.videoObj, getframe(handles.axes1));
+		position = getpixelposition(handles.axes1) + 20*[-1, -1, 2, 2];
+        writeVideo(handles.videoObj, getframe(handles.figure1, position));
     end
 
     handles.simulationObj = simulationObj;
