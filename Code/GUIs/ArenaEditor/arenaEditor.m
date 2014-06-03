@@ -80,9 +80,6 @@ handles.handlesMain = handlesMain;
 handles.oldTool = 'modifyObjectTool';
 handles.hAllTools = findobj('-regexp','Tag','[a-z]+Tool','-not','Tag','PreviewTool');
 
-% set(hObject, 'visible', 'on');
-% WinOnTop(hObject);
-
 % Choose default command line output for arenaEditor
 handles.output = hObject;
 
