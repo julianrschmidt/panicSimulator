@@ -230,16 +230,26 @@ if ~get(hObject, 'Value')
     end
 
 else
-    % make button red    
-    set(hObject, 'BackgroundColor', [1, 0, 0]) 
-    % change tooltip of capturing button
-    set(hObject, 'TooltipString', 'Stop capturing (c)');
-    % create avi-file
-    fileName = ['videos/record_', datestr(now,'yyyy-mm-dd_HH-MM-SS'), '.avi'];
-    handles.videoObj = VideoWriter(fileName);
-    open(handles.videoObj);    
-    handles.captureBool = true;    
-    guidata(hObject, handles);
+    % if folder is not existent
+    if (exist('videos', 'dir') ~= 7)
+        set(hObject, 'Value', 0);
+        if isdeployed
+            videoFolderNotExistentExeGui();
+        else
+            videoFolderNotExistentMatGui();
+        end
+    else
+        % make button red    
+        set(hObject, 'BackgroundColor', [1, 0, 0]) 
+        % change tooltip of capturing button
+        set(hObject, 'TooltipString', 'Stop capturing (c)');
+        % create avi-file
+        fileName = ['videos/record_', datestr(now,'yyyy-mm-dd_HH-MM-SS'), '.avi'];
+        handles.videoObj = VideoWriter(fileName);
+        open(handles.videoObj);    
+        handles.captureBool = true;    
+        guidata(hObject, handles);
+    end
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
