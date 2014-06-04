@@ -1,4 +1,0 @@
-panicSimulator
-==============
-
-Panic Simulator
